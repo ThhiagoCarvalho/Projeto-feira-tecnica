@@ -11,7 +11,23 @@ Este repositório contém o código-fonte do projeto construido por tecnicos. Fo
 O teste vocacional pode envolver questionários, testes de raciocínio lógico e linguagens, dinâmicas e entrevistas. As perguntas costumam abordar:  
 - o que a pessoa prefere estudar?
 - em quais disciplinas apresenta mais dificuldade?
-- gosta de interagir com animais?
   
-Portanto,o teste vocacional vai te dar um panorama geral dos seus pontos fortes, seus interesses e aspirações. A avaliação também vai te ajudar a saber quais são as carreiras que você tem mais chances de gostar e quais áreas vão potencializar ainda mais suas habilidades
+Portanto,o teste vocacional vai te dar um panorama geral dos seus pontos fortes, seus interesses e aspirações. A avaliação também vai te ajudar a saber quais são as carreiras que você tem mais chances de gostar e quais áreas vão potencializar ainda mais suas habilidades  
+
+
+  
+Agradeço por visitar meu repositório e agradeço a todos desenvolvedores que contribuíram!  
+- [Nicolas Pimentel](https://www.google.com)
+- [Valenthina Gasparin](https://www.linkedin.com/in/valenthina-gasparin-8519492b1/)
+- Isabelly de Oliveria
+- Heitor Rodrigues
+- Steffany Felix
+- Cassia Washigton
+  
+
+
+
+
+
+  
 
