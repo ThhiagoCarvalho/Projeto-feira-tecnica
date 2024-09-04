@@ -23,6 +23,7 @@ Agradeço por visitar meu repositório e agradeço a todos desenvolvedores que c
 - Heitor Rodrigues
 - Steffany Felix
 - Cassia Washigton
+- Eduardo Pereira
   
 
 
