@@ -15,17 +15,17 @@ module.exports = class RouterUsuario {
             this._middleUsuario.validar_email,
             this._middleUsuario.validar_senha,
 
-            this._controleUsuario.controle_post
+            this._controleUsuario.controle_usuario_post
         )
 
         this._router.get ('/:idUsuario', 
-            this._controleUsuario.controle_get
+            this._controleUsuario.controle_usuario_get
         )
         this._router.put('/:idUsuario',
-            this._controleUsuario.controle_update
+            this._controleUsuario.controle_usuario_update
         )
         this._router.delete('/:idUsuario',
-            this._controleUsuario.controle_delete
+            this._controleUsuario.controle_usuario_delete
         )
 
         return this._router
