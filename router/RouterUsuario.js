@@ -4,31 +4,27 @@ const controlUsuario = require("../controle/controlUsuario")
 const MiddlewareUsuario = require("../middleware/middlewareUsuario")
 module.exports = class RouterUsuario {
 
-    criarRotasUsuarios () {
+    constructor () { 
         this._router = express.Router()
-
         this._controleUsuario = new controlUsuario()
         this._middleUsuario = new MiddlewareUsuario ()
+    }
 
+    criarRotasUsuarios () {
         this._router.post ('/' ,
             this._middleUsuario.validar_nome,
             this._middleUsuario.validar_email,
             this._middleUsuario.validar_senha,
+            this._middleUsuario.validar_usuario,
 
             this._controleUsuario.controle_usuario_post
         )
-
-        this._router.get ('/:idUsuario', 
-            this._controleUsuario.controle_usuario_get
+        
+        this._router.post ('/login' ,
+            this._middleUsuario.validar_usuario_login,
+            this._controleUsuario.controle_usuario_login
         )
-        this._router.put('/:idUsuario',
-            this._controleUsuario.controle_usuario_update
-        )
-        this._router.delete('/:idUsuario',
-            this._controleUsuario.controle_usuario_delete
-        )
-
+    
         return this._router
-
     }
 }
