@@ -17,10 +17,10 @@ Portanto, o teste vocacional vai te dar um panorama geral dos seus pontos fortes
 ---
 
 Agradeço por visitar meu repositório e agradeço a todos os desenvolvedores que contribuíram!
-- [**Nicolas Pimentel**](https://www.linkedin.com/in/nicolas-lorena-pimentel-56371b2ab/)
 - [**Valenthina Gasparin**](https://www.linkedin.com/in/valenthina-gasparin-8519492b1/)
+- [**Cássia Washington**](https://www.linkedin.com/in/cassia-d-89b447307/)
+- [**Nicolas Pimentel**](https://www.linkedin.com/in/nicolas-lorena-pimentel-56371b2ab/)
 - **Isabelly de Oliveira**
 - **Heitor Rodrigues**
 - **Steffany Felix**
-- **Cássia Washington**
 - **Eduardo Pereira**
