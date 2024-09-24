@@ -11,6 +11,7 @@ module.exports = class MiddlewareResposta {
 
             if  (tokenValido) {
                 next()
+                
             }else {
                 const objResposta = {
                     status: false,

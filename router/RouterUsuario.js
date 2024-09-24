@@ -11,7 +11,11 @@ module.exports = class RouterUsuario {
     }
 
     criarRotasUsuarios () {
+        console.log ("requiestr >>>>>>" )
+
+
         this._router.post ('/' ,
+
             this._middleUsuario.validar_nome,
             this._middleUsuario.validar_email,
             this._middleUsuario.validar_senha,

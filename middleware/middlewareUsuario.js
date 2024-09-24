@@ -4,9 +4,12 @@ const Usuario = require("../modelo/Usuario")
 module.exports = class middlewareUsuario {
 
     validar_nome (request , response , next ) { 
-        const nomeUsuario = request.body.nomeUsuario
+        console.log ("requiestr >>>>>>" + request)
 
+        const nomeUsuario = request.body.nomeUsuario
+        console.log ("nomeUsuario >>" +nomeUsuario)
         if ( nomeUsuario.length  <= 4 ) {
+
             const objResposta = {
                 status: false,
                 msg: "O nome esta muito curto!"
@@ -60,6 +63,7 @@ module.exports = class middlewareUsuario {
         
         if (usuarioExiste == true) {
             const objResposta = {
+                codigo: 1,
                 status: false,
                 msg: "Não é possível cadastrar um usuario com o mesmo email ja existente"
             }
