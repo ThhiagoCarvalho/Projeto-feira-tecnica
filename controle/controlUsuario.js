@@ -26,6 +26,7 @@ module.exports = class ControlUsuario {
         };
             
         response.status(200).send(objResposta);
+
     }
 
     async controle_usuario_login (request , response ) { 
@@ -52,6 +53,5 @@ module.exports = class ControlUsuario {
             return false
         }
     }
-
 
 }

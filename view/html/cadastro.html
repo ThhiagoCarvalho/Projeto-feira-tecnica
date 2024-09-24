@@ -56,8 +56,9 @@
             const jsonEnvio = {
                 nomeUsuario : nome,
                 emailUsuario : email,
-                senha : senhaUsuario
+                senhaUsuario : senha
             }
+            console.log(jsonEnvio)
             let uri_cadastrar_usuario = '/usuarios'
             
             fetch(uri_cadastrar_usuario, {
