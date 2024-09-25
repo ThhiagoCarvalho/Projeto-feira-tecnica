@@ -31,7 +31,8 @@ module.exports = class ControlUsuario {
 
     async controle_usuario_login (request , response ) { 
         const objUsuario = request.usuario
-        objUsuario.senhaUsuario = ""
+
+        console.log (objUsuario)
         try { 
             const objToken = new MeuTokenJWT ()
             const objClaimsToken = {

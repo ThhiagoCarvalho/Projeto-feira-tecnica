@@ -159,6 +159,7 @@ button {
     font-weight: 700;
 }
 .entrar{
+    text-decoration: none;
     color: var(--TOQUECOR, #3F7856);
     font-family: "Inter", system-ui;
     font-size: 48px;

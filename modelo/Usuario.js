@@ -26,6 +26,9 @@ module.exports = class Usuario {
 
     async verificarUsuario () {
         const conexao = Banco.getConexao()
+        console.log (this._emailUsuario)
+        console.log (this._senhaUsuario)
+
         const sql = "select count(*) AS qtd, nomeUsuario from usuarios where emailUsuario = ? and senhaUsuario = md5(?) group by  nomeUsuario"
         try {
             const [result] = await conexao.promise().execute(sql , [ this._emailUsuario , this._senhaUsuario])

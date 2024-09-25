@@ -17,9 +17,9 @@
         <p>
             Bem-vindo a sua conta! O que deseja fazer neste momento?       
          </p>
-        <button class="botaoverdequad" type="button">REFAZER QUIZ</button>
+        <button class="botaoverdequad" type="button"  id = "btn-refazerQuiz">REFAZER QUIZ</button>
         <div class="ou">ou</div>
-        <button class="botaovazioquad" type="button">VER SEU ÚLTIMO RESULTADO</button>
+        <button class="botaovazioquad" type="button" id = "btn-resultados">VER SEU ÚLTIMO RESULTADO</button>
     
         <a href="" class="sair">SAIR </a> 
 
@@ -29,4 +29,23 @@
         </div>
     </div>   
 </body>
+
+
+<script >
+    const mensage_error = document.getElementById("error-message")
+
+    const bntRefazerQuiz= document.getElementById("btn-refazerQuiz")
+    const btnResultados = document.getElementById("btn-resultados")
+
+    bntRefazerQuiz.onclick = function () {
+        window.location = 'quiz.html'
+
+    }
+
+
+    btnResultados.onclick = function () {
+        window.location = 'resultados.html'
+
+    }
+</script>
 </html>

@@ -54,14 +54,19 @@
 
             const jsonEnvio = {
                 emailUsuario : email,
-                senha : senhaUsuario
+                senhaUsuario : senha
             }
+
             let uri_login_usuario = "/usuarios/login"
-            fetch(uri_cadastrar_usuario, {
-                method: "POST",
+            fetch(uri_login_usuario, {
+                method:'post',
+                headers:{
+                'Accept': 'application/json',
+                'Content-Type':'application/json',
+                },
                 body: JSON.stringify(jsonEnvio)
             }).then((response) => {
-                return response.text();
+                return response.json();
             }).then((data) => {
                 console.log(data)
                 processarResultados(data)
@@ -74,27 +79,33 @@
     }
 
     function processarResultados (texto_json){ 
-        const json = JSON.parse(texto_json)
 
-        if (json.status == false){
 
-            emailUsuario.value = "";
-            senhaUsuario.value = "";
 
-            emailUsuario.classList.add("error");
-            senhaUsuario.classList.add("error");
+        try {
+            if (texto_json.status == false){
 
-            emailUsuario.placeholder = "Email invalido!";
-            senhaUsuario.placeholder = "Senhas invalido!";
+                emailUsuario.value = "";
+                senhaUsuario.value = "";
 
-            return; // Para de executar se as senhas não forem iguais
-        } else {
-            emailUsuario.classList.remove("error");
-            senhaUsuario.classList.remove("error");
+                emailUsuario.classList.add("error");
+                senhaUsuario.classList.add("error");
 
-            localStorage.setItem("dados",texto_json);
-            window.location.href= 'paginalogada.html'
-        }
+                emailUsuario.placeholder = "Email invalido!";
+                senhaUsuario.placeholder = "Senhas invalido!";
+
+                return; // Para de executar se as senhas não forem iguais
+            } else {
+                emailUsuario.classList.remove("error");
+                senhaUsuario.classList.remove("error");
+
+                localStorage.setItem("dados",texto_json);
+                window.location.href= 'paginalogada.html'
+            }   
+        }  catch (error) {
+        console.error("Erro ao processar o JSON:", error);
+        console.error("A resposta não é um JSON válido:", json);
+        }    
     }
  
 </script>

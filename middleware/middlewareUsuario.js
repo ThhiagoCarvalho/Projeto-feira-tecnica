@@ -74,6 +74,7 @@ module.exports = class middlewareUsuario {
         }
     }
     async validar_usuario_login ( request , response , next ) {
+
         const emailUsuario = request.body.emailUsuario
         const senhaUsuario = request.body.senhaUsuario
 

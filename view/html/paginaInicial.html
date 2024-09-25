@@ -17,11 +17,11 @@
         <p>
             Para continuar, você pode se registrar no site ou entrar como anônimo. (Se escolher entrar como anônimo, seus dados não serão armazenados). texto a mudar
         </p>
-        <button class="botaoverdequad" type="button">CRIAR CONTA</button>
+        <button class="botaoverdequad" type="button" id="btnCadastrar">CRIAR CONTA</button>
         <div class="jatemconta">Já possui conta?</div>
-        <div class="entrar">ENTRAR</div>
+        <a href="login.html" class="entrar">ENTRAR </a> 
         <div class="ou">ou</div>
-        <button class="botaovazioquad" type="button">ENTRAR SEM CONTA</button>
+        <button class="botaovazioquad" type="button" id="btnEntrarAnonimo">ENTRAR SEM CONTA</button>
     
 
         <div class="caixabaixa">
@@ -31,4 +31,23 @@
         </div>
     </div>   
 </body>
+
+
+<script>
+     const mensage_error = document.getElementById("error-message")
+
+    const btnCadastrar= document.getElementById("btnCadastrar")
+    const btnAnonimo = document.getElementById("btnEntrarAnonimo")
+
+    btnCadastrar.onclick = function () {
+        window.location = 'cadastro.html'
+
+    }
+
+
+    btnAnonimo.onclick = function () {
+        window.location = 'quiz.html'
+
+    }
+</script>
 </html>
