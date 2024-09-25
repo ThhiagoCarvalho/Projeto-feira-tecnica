@@ -44,17 +44,19 @@ input {
     border: none;
     font-size: 70px;
     color: #FFF;
-    padding-left: 70px;
+    padding-left:170px;
     margin: 0 auto 97px auto;
     border-radius: 86px;
 
 }
 
 input::placeholder {
+
     color: #FFF;
     font-family: Inter;
     font-size: 70px;
     font-weight: 700;
+    
 }
 
 input::content { 
@@ -93,13 +95,31 @@ button {
     background: #D9D9D9;
     border: none
 }
-.error {
-    color: red;
+.errorButton {
+
+    font-family: Inter;
+    font-size: 70px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    background-color: rgb(246, 195, 195);
     font-weight: bolder;
-    font-size: 16px;
-    margin-top: 20px;
-    text-align: center;
+    border: 2px solid rgb(230, 0, 0); /* Borda vermelha para realçar o erro */
+
 }
+
+
+.errorMensagge{
+    margin: 40px 0px 70px 0;
+    text-transform: uppercase;
+    font-family: Inter;
+    font-size: 50px;
+    font-weight: 700;
+    text-align: center;
+    font-weight: bolder;
+    color: rgb(242, 56, 56);
+}
+
+
 
 .possui-conta p{
     color: #000;

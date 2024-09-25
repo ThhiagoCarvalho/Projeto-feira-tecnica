@@ -10,7 +10,7 @@
 <body>
     <div class="box">
         <div class="faixa"> 
-            <button class="btn-voltar" type="button">< </button>
+            <button class="btn-voltar" id= "btnVoltar" type="button">< </button>
 
         </div>
         <h2>Login</h2>
@@ -18,14 +18,15 @@
             Que bom ver você por aqui novamente! Faça login com suas informações e continue aproveitando tudo o que quiz tem a oferecer
         </p>
         
-            <input type="text" id="txtEmail" placeholder="Email:">
-            <input type="password" id="txtSenha" placeholder="Senha:">
+            <input type="text" id="txtEmail" placeholder="Email:" autocomplete="off">>
+            <input type="password" id="txtSenha" placeholder="Senha:" autocomplete="off">>
+            <div id="error-message" class="errorMensagge" style="display: none;"> </div>
+
         <button id = "btn-login" class="btn-cadastrar" type="button">ENTRAR</button>
-        <div id="error-message" class="error" style="display: none;"> </div>
 
         <div class="possui-conta">
             <p> Ainda não possui conta? </p>
-            <a href="" class="login">CRIAR CONTA </a> 
+            <a href="cadastro.html" class="login">CRIAR CONTA </a> 
         </div>
     </div>
 </body>
@@ -36,11 +37,17 @@
 
     const btnLogin = document.getElementById("btn-login")
     const mensage_error = document.getElementById("error-message")
+    const bntVoltar = document.getElementById("btnVoltar")
+    bntVoltar.onclick = function ( ) { 
+        window.location = "paginaInicial.html"
+    }
 
 
     btnLogin.onclick = function ( ) { 
         login ()
     }
+
+    
 
     function login () { 
         const email = emailUsuario.value
@@ -88,16 +95,16 @@
                 emailUsuario.value = "";
                 senhaUsuario.value = "";
 
-                emailUsuario.classList.add("error");
-                senhaUsuario.classList.add("error");
+                emailUsuario.classList.add("errorButton");
+                senhaUsuario.classList.add("errorButton");
 
                 emailUsuario.placeholder = "Email invalido!";
                 senhaUsuario.placeholder = "Senhas invalido!";
 
                 return; // Para de executar se as senhas não forem iguais
             } else {
-                emailUsuario.classList.remove("error");
-                senhaUsuario.classList.remove("error");
+                emailUsuario.classList.remove("errorButton");
+                senhaUsuario.classList.remove("errorButton");
 
                 localStorage.setItem("dados",texto_json);
                 window.location.href= 'paginalogada.html'

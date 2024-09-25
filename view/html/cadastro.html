@@ -10,22 +10,23 @@
 <body>
     <div class="box">
         <div class="faixa"> 
-            <button class="btn-voltar" type="button">< </button>
+            <button class="btn-voltar" id="btnVoltar" type="button">< </button>
 
         </div>
         <h2>Criar conta</h2>
         <p>
             Nosso quiz oferece diversas experiências. E por isso recomendamos que você crie sua conta para salvá-las e aproveitar ao máximo 
         </p>
-            <input type="text" id="txtNome" placeholder="Nome:">
-            <input type="text" id="txtEmail" placeholder="Email:">
-            <input type="password" id="txtSenha" placeholder="Senha:">
+            <input type="text" id="txtNome" placeholder="Nome:" autocomplete="off">>
+            <input type="email" id="txtEmail" placeholder="Email:" required autocomplete="off">>
+            <input type="password" id="txtSenha" placeholder="Senha:" autocomplete="off">>
+            <div id="error-message" class="errorMensagge" style="display: none;"> </div>
+
         <button id = "btn-cadastrar" class="btn-cadastrar" type="button">Cadastrar</button>
 
-        <div id="error-message" class="error" style="display: none;"> </div>
         <div class="possui-conta">
-            <p> Ainda não possui conta? </p>
-            <a href="" class="login">ENTRAR </a> 
+            <p>Ja possui conta? </p>
+            <a href="login.html" class="login">ENTRAR </a> 
         </div>
     </div>
 </body>
@@ -36,6 +37,12 @@
     const mensage_error = document.getElementById("error-message")
 
     const bntCadastrar = document.getElementById("btn-cadastrar")
+
+    const bntVoltar = document.getElementById("btnVoltar")
+    bntVoltar.onclick = function ( ) { 
+        window.location = "paginaInicial.html"
+    }
+
 
     bntCadastrar.onclick = function () {
         cadastrar ()
@@ -91,7 +98,7 @@
                 mensage_error.style.display = "block"; 
 
             }else  if (json.status == false ){
-                let text = "Falha ao cadastrar!"
+                let text = json.msg
                 mensage_error.textContent = text
                 mensage_error.style.display = "block"; 
             

@@ -1,22 +1,26 @@
 const express = require('express');
 const Usuario = require("../modelo/Usuario")
+const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3,}$/;
 
 module.exports = class middlewareUsuario {
 
     validar_nome (request , response , next ) { 
-        console.log ("requiestr >>>>>>" + request)
 
         const nomeUsuario = request.body.nomeUsuario
         console.log ("nomeUsuario >>" +nomeUsuario)
-        if ( nomeUsuario.length  <= 4 ) {
-
+        if (!isNaN (nomeUsuario)) {
+            const objResposta = {
+                status: false,
+                msg: "O nome nao pode ser somente numeros!"
+            }
+         }else if ( nomeUsuario.length  <= 2 ) {
             const objResposta = {
                 status: false,
                 msg: "O nome esta muito curto!"
             }
                 response.status(200).send(objResposta);
                 
-        }else {
+        }else{
             next();
         }
         
@@ -32,7 +36,14 @@ module.exports = class middlewareUsuario {
                 msg: "O email esta muito curto!"
             }
                 response.status(200).send(objResposta);
-        }else {
+        } else  if (!regex.test(emailUsuario)) {
+                const objResposta = {
+                    status: false,
+                    msg: "Insira um e-mail válido!"
+                }
+                response.status(200).send(objResposta);
+        
+        } else {
             next();
         }
         
@@ -59,7 +70,6 @@ module.exports = class middlewareUsuario {
         objUsuario.emailUsuario = emailUsuario
 
         const usuarioExiste = await objUsuario.verificarEmail();
-        console.log( "usuarioExiste >>>>" + usuarioExiste)
         
         if (usuarioExiste == true) {
             const objResposta = {

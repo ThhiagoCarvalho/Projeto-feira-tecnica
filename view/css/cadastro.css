@@ -6,13 +6,18 @@
 
 }
 
-.error {
-    color: red;
-    font-weight: bolder;
-    font-size: 100px;
-    
-    margin: 40px auto 40px auto;
+
+.errorMensagge{
+    margin: 40px 0px 70px 0;
+    text-transform: uppercase;
+    font-family: Inter;
+    font-size: 50px;
+    font-weight: 700;
     text-align: center;
+    font-weight: bolder;
+    color: rgb(242, 56, 56);
+    transition: all 0.3s ease;
+
 }
 
 .faixa {

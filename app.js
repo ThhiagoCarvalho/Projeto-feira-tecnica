@@ -11,7 +11,6 @@ app.use('/html', express.static(__dirname + '/view/html' ));
 app.use('/css', express.static(__dirname + '/view/css'));
 
 
-
 const roteadorUsuario = new RouterUsuario()
 const roteadorResposta = new  RouterResposta ()
 
