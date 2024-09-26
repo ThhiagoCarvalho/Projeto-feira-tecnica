@@ -44,7 +44,7 @@ module.exports = class ControlResposta {
         }
     }
 
-    async controle_resposta_read_by_id (request , response) {
+    async controle_buscarHistorico (request , response) {
         try {
             const idUsuarioResp = request.params.idRespostas_idUsuario
             
@@ -66,5 +66,57 @@ module.exports = class ControlResposta {
         }
 
     }
+
+
+    async controle_buscarPerguntas (request , response) {
+        try {
+            const idPergunta = request.params.idPergunta
+            
+            const objResposta = new RespostaUsuario ()
+            respUsuario.Respostas_idUsuario = idUsuarioResp
+            const exebirRespostas =  await respUsuario.buscarRespostas ()
+
+            const objResposta = {
+                status: true,
+                dados : exebirRespostas
+            };
+
+            response.status(200).send(objResposta);
+
+
+        }catch (error) {
+            console.log("Errro >>>" , error)
+            return false
+        }
+
+    }
+
+    async controle_buscarRespostas (request , response) {
+        try {
+            const idUsuarioResp = request.params.idRespostas_idUsuario
+            
+            const respUsuario = new RespostaUsuario ()
+            respUsuario.Respostas_idUsuario = idUsuarioResp
+            const exebirRespostas =  await respUsuario.buscarRespostas ()
+
+            const objResposta = {
+                status: true,
+                dados : exebirRespostas
+            };
+
+            response.status(200).send(objResposta);
+
+
+        }catch (error) {
+            console.log("Errro >>>" , error)
+            return false
+        }
+
+    }
+
+
+
+
+
 }
 

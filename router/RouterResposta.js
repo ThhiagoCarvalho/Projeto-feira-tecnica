@@ -20,7 +20,7 @@ module.exports = class RouterResposta {
         
         this._router.get ('/:idRespostas_idUsuario' ,
             this._middleResposta.controle_resposta_autenticacao,
-            this._controleResposta.controle_resposta_read_by_id
+            this._controleResposta.controle_buscarHistorico
         )
 
         return this._router
