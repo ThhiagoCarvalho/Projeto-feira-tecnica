@@ -27,7 +27,7 @@ module.exports = class Questoes {
 
     async getRespostas() { 
         const conexao = Banco.getConexao();
-        const sql = "SELECT Resposta FROM Respostas_Questoes WHERE ID_Curso_Ref = ?;";
+        const sql = "SELECT Resposta FROM Respostas_Questoes WHERE ID_Questao_Ref = ?;";
         try { 
             let IdQuestao = await this.getIdQuestoes();
             let result;   
@@ -39,7 +39,7 @@ module.exports = class Questoes {
         }
     }
 
-    async getIdQuestoes() { 
+    async getIdQuestao() { 
         const conexao = Banco.getConexao();
         const sql = "SELECT ID_Questao FROM Questoes_Cursos WHERE Posicao = ? AND ID_Curso_Ref = ?;";
         try { 
@@ -58,7 +58,7 @@ module.exports = class Questoes {
 
     async getValorResposta() { 
         const conexao = Banco.getConexao();
-        const sql = "SELECT Valor_Resposta FROM Respostas_Questoes WHERE ID_Questao_Ref = ? AND Resposta = ?;";
+        const sql = "SELECT Valor FROM Respostas_Questoes WHERE ID_Questao_Ref = ? AND Resposta = ?;";
         try { 
             let IdQuestao = await this.getIdQuestoes(); // Obtém o ID da questão
             let result;
