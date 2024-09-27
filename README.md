@@ -20,7 +20,7 @@ Agradeço por visitar meu repositório e agradeço a todos os desenvolvedores qu
 - [**Valenthina Gasparin**](https://www.linkedin.com/in/valenthina-gasparin-8519492b1/)
 - [**Cássia Washington**](https://www.linkedin.com/in/cassia-d-89b447307/)
 - [**Nicolas Pimentel**](https://www.linkedin.com/in/nicolas-lorena-pimentel-56371b2ab/)
-- **Isabelly de Oliveira**
+- [**Isabelly de Oliveira**](https://www.linkedin.com/in/isabelly-oliveira-b583742a6/)
 - **Heitor Rodrigues**
 - **Steffany Felix**
 - **Eduardo Pereira**
