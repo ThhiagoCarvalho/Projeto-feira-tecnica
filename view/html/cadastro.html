@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css/cadastro.css" media="screen" />
+
+    <title>Cadastro</title>
+</head>
+<body>
+    <div class="box">
+        <div class="faixa"> 
+            <button class="btn-voltar" id="btnVoltar" type="button">< </button>
+
+        </div>
+        <h2>Criar conta</h2>
+        <p>
+            Nosso quiz oferece diversas experiências. E por isso recomendamos que você crie sua conta para salvá-las e aproveitar ao máximo 
+        </p>
+            <input type="text" id="txtNome" placeholder="Nome:" autocomplete="off">>
+            <input type="email" id="txtEmail" placeholder="Email:" required autocomplete="off">>
+            <input type="password" id="txtSenha" placeholder="Senha:" autocomplete="off">>
+            <div id="error-message" class="errorMensagge" style="display: none;"> </div>
+
+        <button id = "btn-cadastrar" class="btn-cadastrar" type="button">Cadastrar</button>
+
+        <div class="possui-conta">
+            <p>Ja possui conta? </p>
+            <a href="login.html" class="login">ENTRAR </a> 
+        </div>
+    </div>
+</body>
+<script >
+    const nomeUsuario = document.getElementById("txtNome")
+    const emailUsuario = document.getElementById("txtEmail")
+    const senhaUsuario = document.getElementById("txtSenha")
+    const mensage_error = document.getElementById("error-message")
+
+    const bntCadastrar = document.getElementById("btn-cadastrar")
+
+    const bntVoltar = document.getElementById("btnVoltar")
+    bntVoltar.onclick = function ( ) { 
+        window.location = "paginaInicial.html"
+    }
+
+
+    bntCadastrar.onclick = function () {
+        cadastrar ()
+    }
+
+    function cadastrar () {
+        const nome = nomeUsuario.value
+        const email = emailUsuario.value
+        const senha = senhaUsuario.value
+
+ 
+        if (!nome || !email || !senha){
+            mensage_error.textContent = "Preencha todos os campos!"
+            mensage_error.style.display = "block"
+        }else {
+            mensage_error.style.display = "none"
+
+            const jsonEnvio = {
+                nomeUsuario : nome,
+                emailUsuario : email,
+                senhaUsuario : senha
+            }
+            console.log(jsonEnvio)
+            let uri_cadastrar_usuario = '/usuarios'
+            
+            fetch(uri_cadastrar_usuario, {
+                method:'post',
+                headers:{
+                'Accept': 'application/json',
+                'Content-Type':'application/json',
+                },
+                body: JSON.stringify(jsonEnvio)
+            }).then((response) => {
+                return response.json();
+            }).then((data) => {
+                console.log(data)
+                processarResultados(data)
+            }).catch((error) => {
+                console.error("Error:", error);
+
+            });
+
+        }
+    }
+
+    function processarResultados(json)  {
+     
+        try {
+
+        if (json.status == false && json.codigo == 1){
+                let text = "Este email ja esta cadastrado!"
+                mensage_error.textContent = text
+                mensage_error.style.display = "block"; 
+
+            }else  if (json.status == false ){
+                let text = json.msg
+                mensage_error.textContent = text
+                mensage_error.style.display = "block"; 
+            
+            }else  if (json.status == true){
+                localStorage.setItem("dados",json);
+                window.location = 'login.html'
+            }
+        }  catch (error) {
+        // Se ocorrer um erro ao fazer o parse, mostre o erro no console
+        console.error("Erro ao processar o JSON:", error);
+        console.error("A resposta não é um JSON válido:", json);
+        }
+    }
+
+</script>
+</html>

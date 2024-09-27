@@ -1,0 +1,74 @@
+*{ 
+    margin: 0;
+    padding: 0;
+    background: #F1F1F1;
+    box-sizing: border-box;
+    }
+
+.faixa {
+    width: 1366px;
+    height: 168px;
+    background: var(--TOQUECOR, #3F7856);
+    margin:  0px auto 120px auto;
+    
+}
+.questao {
+    width: 1170px;
+    height: 412px;
+    border-radius: 50px;
+    border: 5px solid var(--TOQUECOR, #3F7856);
+    background: #FBFBFB;
+    word-wrap: break-word;
+
+    display: block;
+
+    color: #000;
+
+    font-family: Inter;
+    font-size: 48px;
+    margin:  0px auto 80px auto;
+    font-weight: 400;
+    text-align: center;
+    
+}
+
+.btn-voltar { 
+    font-size: 30px;
+    border: none;
+    color: #3F7856;
+    width: 262px; /* Largura correta */
+    height: 88px; /* Altura correta */
+    display: block;
+
+    margin: 208px 926px 64px 0;
+}
+.questao p { 
+    padding-top: 139px;
+    background-color: transparent;
+}
+
+.respostas p { 
+    padding-top: 80px;
+
+    background-color: transparent;
+}
+.respostas {
+    text-align: center;
+    word-wrap: break-word;
+
+    display: block;
+    width: 1179px;
+    height: 244px;
+    border-radius: 50px;
+    border: 5px solid var(--TOQUECOR, #3F7856);
+    background: #FBFBFB;
+
+    margin:  0px auto 50px auto;
+
+    color: #000;
+
+    /* TEXTO RESPOSTA */
+    font-family: Inter;
+    font-size: 40px;
+    font-weight: 400;
+}
