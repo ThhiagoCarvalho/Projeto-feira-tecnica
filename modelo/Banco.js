@@ -1,7 +1,7 @@
 const mysql = require('mysql2');
 
 class Banco {
-    static HOST = 'localhost';
+    static HOST = '191.252.200.177';
     static USER = 'root';
     static PWD = '@123456';
     static DB = 'feira_tecnica';

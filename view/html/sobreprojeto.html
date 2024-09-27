@@ -1,14 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=1366px, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../css/sobreProjeto.css" media="screen" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     
-    <title>Sobre o Projeto</title>
-
+    <title>Sobre nós</title>
 </head>
 <body>
-    
+    <div class="faixa"> 
+        <button class="btn-voltar" id="btnVoltar" type="button">< </button>
+    </div>
+
+    <h2>SOBRE O PROJETO</h2>
+
+    <div class = "introducao" > 
+        <p> Para continuar, você pode se registrar no site ou entrar como anônimo. (Se escolher entrar como anônimo, seus dados não serão armazenados). </p>
+    </div>
+
+
+
+    <div class="faixa"> 
+    </div>
 </body>
+
+
+<script> 
+    const bntVoltar = document.getElementById("btnVoltar")
+    bntVoltar.onclick = function ( ) { 
+        window.location = "paginaInicial.html"
+    }
+</script>
 </html>
