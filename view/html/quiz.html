@@ -11,7 +11,7 @@
     <div class="faixa"> 
     </div>
 
-    <div class="questao">
+    <div class="questao" id="caixaPergunta">
         <p> se quiser sim</p>
     </div>
 
@@ -23,4 +23,139 @@
     <button class="btn-voltar" id= "btnVoltar" type="button">< Voltar </button>
 
 </body>
+
+<script>
+
+    let caixaPergunta = document.getElementById("caixaPergunta")
+    let cursoReferenciado = 1000
+
+    const pontosUsuario = {
+        Pontos_Informatica: 0,
+        Pontos_Eletronica: 0,
+        Pontos_Publicidade: 0,
+        Pontos_Administracao: 0,
+        Pontos_Quimica: 0,
+        Pontos_Analises: 0 
+    };
+
+    for (let contadorPosicao = 1 ; contadorPosicao<= 10 ; contadorPosicao++)  { 
+            let uri_get_questao = `/perguntas/${contadorPosicao}/${cursoReferenciado}`
+            
+            fetch(uri_get_questao, {
+                method:'get',
+                headers:{
+                'Accept': 'application/json',
+                'Content-Type':'application/json',
+                }
+            }).then((response) => {
+                return response.json();
+            }).then((data) => {
+                console.log(data)
+                processarPerguntas(data)
+            }).catch((error) => {
+                console.error("Error:", error);
+
+            });
+
+
+            let uri_get_resposta = `/respostas/${cursoReferenciado}`
+            fetch(uri_get_resposta , {
+                method:'get',
+                headers:{
+                'Accept': 'application/json',
+                'Content-Type':'application/json',
+                }
+            }).then((response) => {
+                return response.json();
+            }).then((data) => {
+                console.log(data)
+                processarRespostas(data , contadorPosicao)
+            }).catch((error) => {
+                console.error("Error:", error);
+
+            });
+            
+
+            if  (contadorPosicao == 4) { 
+                /*
+                    aqui vai mudar o cursoID referenciado , porem nao criamos isso ainda e nem o modelo EEEE achei necessario adicionar como body a variavel PonotosUsuarios
+                */
+                let uri_get_curso = ``
+                fetch(uri_get_curso , {
+                    method:'get',
+                    headers:{
+                    'Accept': 'application/json',
+                    'Content-Type':'application/json',
+                    },
+                    body : JSON.stringify (pontosUsuario)
+                }).then((response) => {
+                    return response.json();
+                }).then((data) => {
+                     cursoReferenciado = data.dados.idCursoRef
+                }).catch((error) => {
+                    console.error("Error:", error);
+
+                });
+            }
+    }
+
+
+    function processarRespostas(txtResposta , posicao){ 
+        txtResposta.dados.forEach(valor => {
+            const botaoResposta = document.createElement("button")
+            botaoResposta.textContent = valor
+            botaoResposta.classList.add('resposta')
+
+        });
+
+        /* aqui descobre qual resposta foi selecionada e logo descobre seus respectivos pontos */
+        botaoResposta.onclick =  function () { 
+            let conteudoResposta = botaoResposta.value 
+
+            const jsonEnvio = { 
+                resposta : conteudoResposta
+            }
+
+            let uri_get_pontoResposta = `/respostas/${posicao}`
+                fetch(uri_get_pontoResposta , {
+                    method:'get',
+                    headers:{
+                    'Accept': 'application/json',
+                    'Content-Type':'application/json',
+                    },
+                    body: JSON.stringify(jsonEnvio)
+                }).then((response) => {
+                    return response.json();
+                }).then((data) => {
+                     salvarPontos (data )
+                }).catch((error) => {
+                    console.error("Error:", error);
+
+                });
+            }
+
+        }
+    
+
+
+    function processarPerguntas(data) { 
+        let txtPergunta = data.dados
+        caixaPergunta.textContent = txtPergunta
+    }
+
+
+    /* precisa contruir uma estrutura para salvar os ponots, fique em duvida se devemos guardar numa variavel? OUU se cassia e dudu fizeram as resposta chegando em um valor absoluto
+    no final, podemos entender que todas as materias terao um minimo de pontos  que nao serao NULOSSS*/
+    function salvarPontos (valorResposta)  { 
+        valorResposta.dados.forEach(valor => {
+        for (let materiaPontos in valor) {
+            pontosUsuario[materiaPontos] += valor[materiaPontos];
+        }
+        
+        });
+
+    }
+
+    
+    </script>
 </html>

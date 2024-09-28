@@ -1,9 +1,9 @@
 const mysql = require('mysql2');
 
 class Banco {
-    static HOST = '191.252.200.177';
+    static HOST = 'localhost';
     static USER = 'root';
-    static PWD = '@123456';
+    static PWD = 'root123';
     static DB = 'feira_tecnica';
     static PORT = 3306;
     static CONEXAO = null;

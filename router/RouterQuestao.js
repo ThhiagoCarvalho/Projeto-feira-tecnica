@@ -14,7 +14,7 @@ module.exports = class RouterQuiz {
     o controle questao pode ser 2 em 1 !!!!
     */
     criarRotasQuiz  () {    
-        this._router.get ('/perguntas/:posicao/:idCursoRef' ,
+        this._router.get ('/perguntas/readByID/:posicao/:idCursoRef' ,
             this._ControlQuestao.controle_get_ID_questao
         )
 
