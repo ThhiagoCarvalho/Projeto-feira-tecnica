@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historico</title>
+    <link rel="stylesheet" type="text/css" href="../css/historicoUsuario.css" media="screen" />
+
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+
+</head>
+<body>
+
+    <div class="faixa"> 
+        <button class="btn-voltar" id="btnVoltar" type="button">< </button>
+    </div>
+
+    <div id="chartdiv"></div>
+    <style> 
+        #chartdiv {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+
+    <div class="fim">
+        <a class="sobrecaixabaixa" href="../html/sobrenos.html">Sobre nós</a>
+        <a class="sobreprojeto" href="../html/sobreprojeto.html">Sobre o projeto</a>
+    </div>
+
+    <!-- 
+        <div class="caixabaixa">
+            <a class="sobrecaixabaixa" href="../html/sobrenos.html">Sobre nós</a>
+            <a class="sobreprojeto" href="../html/sobreprojeto.html">Sobre o projeto</a>
+        </div>-->
+</body>
+
+<script>
+      const bntVoltar = document.getElementById("btnVoltar")
+    bntVoltar.onclick = function ( ) { 
+        window.location = "paginaInicial.html"
+    }
+
+    am5.ready(function() {
+    
+    // Create root element
+    var root = am5.Root.new("chartdiv");
+    
+    // Set themes
+    root.setThemes([
+      am5themes_Animated.new(root)
+    ]);
+    
+    // Create chart
+    var chart = root.container.children.push(am5percent.PieChart.new(root, {
+      layout: root.verticalLayout
+    }));
+    
+    // Create series
+    var series = chart.series.push(am5percent.PieSeries.new(root, {
+      valueField: "value",
+      categoryField: "category"
+    }));
+    
+    // Set data
+    series.data.setAll([
+      { value: 10, category: "Informática " },
+      { value: 9, category: "Administração " },
+      { value: 6, category: "Análises Clínicas" },
+      { value: 5, category: "Publicidade" },
+      { value: 4, category: "Química " },
+      { value: 3, category: "Eletrônica" },
+    ]);
+    
+    // Create legend
+    var legend = chart.children.push(am5.Legend.new(root, {
+      centerX: am5.percent(50),
+      x: am5.percent(50),
+      marginTop: 15,
+      marginBottom: 15
+    }));
+    
+    legend.data.setAll(series.dataItems);
+    
+    // Variable to store the last clicked slice
+    var previousSlice = null;
+    series.appear(1000, 100);     // Add event listener for click on slices
+    })
+</script>
+</html>
