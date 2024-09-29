@@ -2,160 +2,144 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1366px, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../css/quiz.css" media="screen" />
-
     <title>Quiz</title>
 </head>
 <body>
-    <div class="faixa"> 
-    </div>
+    <div class="faixa"></div>
 
     <div class="questao" id="caixaPergunta">
-        <p> se quiser sim</p>
+        <p>Se quiser sim</p> <!-- Texto da pergunta que será atualizado via JS -->
     </div>
 
-    <div class="respostas">
-        <p> se quiser sim</p>
+    <div class="respostas"></div> <!-- Local onde as respostas serão inseridas dinamicamente -->
 
-    </div>
+    <button class="btn-voltar" id="btnVoltar" type="button">Voltar</button> <!-- Botão para voltar -->
 
-    <button class="btn-voltar" id= "btnVoltar" type="button">< Voltar </button>
+    <script>
+        let caixaPergunta = document.getElementById("caixaPergunta");
+        let cursoReferenciado = 1000; // ID do curso referenciado
 
-</body>
+        const pontosUsuario = {
+            Pontos_Informatica: 0,
+            Pontos_Eletronica: 0,
+            Pontos_Publicidade: 0,
+            Pontos_Administracao: 0,
+            Pontos_Quimica: 0,
+            Pontos_Analises: 0 
+        };
 
-<script>
-
-    let caixaPergunta = document.getElementById("caixaPergunta")
-    let cursoReferenciado = 1000
-
-    const pontosUsuario = {
-        Pontos_Informatica: 0,
-        Pontos_Eletronica: 0,
-        Pontos_Publicidade: 0,
-        Pontos_Administracao: 0,
-        Pontos_Quimica: 0,
-        Pontos_Analises: 0 
-    };
-
-    for (let contadorPosicao = 1 ; contadorPosicao<= 10 ; contadorPosicao++)  { 
-            let uri_get_questao = `/perguntas/${contadorPosicao}/${cursoReferenciado}`
+        // Loop para buscar as perguntas e respostas
+        for (let contadorPosicao = 1; contadorPosicao <= 10; contadorPosicao++) {
+            let uri_get_questao = `/perguntas/${contadorPosicao}/${cursoReferenciado}`;
             
-            fetch(uri_get_questao, {
-                method:'get',
-                headers:{
-                'Accept': 'application/json',
-                'Content-Type':'application/json',
-                }
-            }).then((response) => {
-                return response.json();
-            }).then((data) => {
-                console.log(data)
-                processarPerguntas(data)
-            }).catch((error) => {
-                console.error("Error:", error);
+            // Fetch da pergunta
+            fetch(uri_get_questao)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    processarPerguntas(data);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
 
+            // Fetch das respostas
+            let uri_get_resposta = `/respostas/${cursoReferenciado}`;
+            fetch(uri_get_resposta)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    processarRespostas(data, contadorPosicao);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+
+            // Mudança do curso após a 3ª questão
+            if (contadorPosicao == 3) {
+                let uri_get_curso = `/perguntas/${contadorPosicao}`; // Corrigido para não usar idCursoRef
+
+                fetch(uri_get_curso)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        cursoReferenciado = data.dados.idCursoRef;
+                        console.log("Novo curso referenciado:", cursoReferenciado);
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                    });
+            }
+        }
+
+        // Processamento das respostas e adição de botões
+        function processarRespostas(txtResposta, posicao) {
+            const divRespostas = document.querySelector('.respostas');
+            divRespostas.innerHTML = ''; // Limpa as respostas anteriores
+
+            txtResposta.dados.forEach((valor) => {
+                const botaoResposta = document.createElement("button");
+                botaoResposta.textContent = valor;
+                botaoResposta.classList.add('resposta');
+                
+                botaoResposta.onclick = function () {
+                    let conteudoResposta = botaoResposta.textContent;
+
+                    let uri_get_pontoResposta = `/respostas/${posicao}/${conteudoResposta}`;
+                    fetch(uri_get_pontoResposta)
+                        .then((response) => response.json())
+                        .then((data) => {
+                            salvarPontos(data);
+
+                            // Enviar pontos após a 3ª questão
+                            if (posicao > 3) {
+                                let uri_enviar_pontos = `/pontos`; // Altera para a rota de cálculo
+                                fetch(uri_enviar_pontos, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(pontosUsuario) // Passando os pontos
+                                })
+                                .then((response) => response.json())
+                                .then((data) => {
+                                    console.log("Pontos enviados:", data);
+                                })
+                                .catch((error) => {
+                                    console.error("Error ao enviar pontos:", error);
+                                });
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("Error:", error);
+                        });
+                };
+
+                divRespostas.appendChild(botaoResposta);
             });
+        }
 
+        // Processamento da pergunta
+        function processarPerguntas(data) {
+            let txtPergunta = data.dados;
+            caixaPergunta.textContent = txtPergunta; // Atualiza a pergunta na tela
+        }
 
-            let uri_get_resposta = `/respostas/${cursoReferenciado}`
-            fetch(uri_get_resposta , {
-                method:'get',
-                headers:{
-                'Accept': 'application/json',
-                'Content-Type':'application/json',
+        // Função para salvar os pontos
+        function salvarPontos(valorResposta) {
+            console.log("Pontos recebidos:", valorResposta);
+            
+            valorResposta.dados.forEach((valor) => {
+                for (let materiaPontos in valor) {
+                    if (pontosUsuario[materiaPontos] !== undefined) {
+                        pontosUsuario[materiaPontos] += valor[materiaPontos];
+                    }
                 }
-            }).then((response) => {
-                return response.json();
-            }).then((data) => {
-                console.log(data)
-                processarRespostas(data , contadorPosicao)
-            }).catch((error) => {
-                console.error("Error:", error);
-
             });
             
-
-            if  (contadorPosicao == 4) { 
-                /*
-                    aqui vai mudar o cursoID referenciado , porem nao criamos isso ainda e nem o modelo EEEE achei necessario adicionar como body a variavel PonotosUsuarios
-                */
-                let uri_get_curso = ``
-                fetch(uri_get_curso , {
-                    method:'get',
-                    headers:{
-                    'Accept': 'application/json',
-                    'Content-Type':'application/json',
-                    },
-                    body : JSON.stringify (pontosUsuario)
-                }).then((response) => {
-                    return response.json();
-                }).then((data) => {
-                     cursoReferenciado = data.dados.idCursoRef
-                }).catch((error) => {
-                    console.error("Error:", error);
-
-                });
-            }
-    }
-
-
-    function processarRespostas(txtResposta , posicao){ 
-        txtResposta.dados.forEach(valor => {
-            const botaoResposta = document.createElement("button")
-            botaoResposta.textContent = valor
-            botaoResposta.classList.add('resposta')
-
-        });
-
-        /* aqui descobre qual resposta foi selecionada e logo descobre seus respectivos pontos */
-        botaoResposta.onclick =  function () { 
-            let conteudoResposta = botaoResposta.value 
-
-            const jsonEnvio = { 
-                resposta : conteudoResposta
-            }
-
-            let uri_get_pontoResposta = `/respostas/${posicao}`
-                fetch(uri_get_pontoResposta , {
-                    method:'get',
-                    headers:{
-                    'Accept': 'application/json',
-                    'Content-Type':'application/json',
-                    },
-                    body: JSON.stringify(jsonEnvio)
-                }).then((response) => {
-                    return response.json();
-                }).then((data) => {
-                     salvarPontos (data )
-                }).catch((error) => {
-                    console.error("Error:", error);
-
-                });
-            }
-
+            console.log("Pontos atualizados:", pontosUsuario);
         }
-    
-
-
-    function processarPerguntas(data) { 
-        let txtPergunta = data.dados
-        caixaPergunta.textContent = txtPergunta
-    }
-
-
-    /* precisa contruir uma estrutura para salvar os ponots, fique em duvida se devemos guardar numa variavel? OUU se cassia e dudu fizeram as resposta chegando em um valor absoluto
-    no final, podemos entender que todas as materias terao um minimo de pontos  que nao serao NULOSSS*/
-    function salvarPontos (valorResposta)  { 
-        valorResposta.dados.forEach(valor => {
-        for (let materiaPontos in valor) {
-            pontosUsuario[materiaPontos] += valor[materiaPontos];
-        }
-        
-        });
-
-    }
-
-    
     </script>
+</body>
 </html>
