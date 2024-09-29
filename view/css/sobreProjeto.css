@@ -162,3 +162,29 @@ p {
     word-wrap:break-word;
 
 }
+
+.introducao p {
+    color: #3F7856; /* ajuste a cor conforme necessário */
+    margin: 0;
+    font-family: "Inter", system-ui;
+    font-size: 38px;
+    font-weight: 400;
+
+
+}
+
+p { 
+    color: #000;
+
+    text-align: center;
+    /* TEXTOS BASICOS */
+    font-family: "Inter", system-ui;
+    font-size: 38px;
+    font-weight: 400;
+    padding: 70px;
+}
+
+
+.descricao { 
+    text-align: center;
+}
