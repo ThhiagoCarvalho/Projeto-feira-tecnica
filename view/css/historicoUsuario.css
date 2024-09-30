@@ -5,6 +5,25 @@ body {
 
 }
 
+p{
+    color: #000;
+    text-align: center;
+    /* TEXTOS BASICOS */
+    font-family: "Inter", system-ui;
+    font-size: 45px;
+    font-weight: 400;
+    margin: 0 auto 315px auto;
+    word-wrap: break-word;
+    text-align: center;
+    margin: 100px;
+}
+.imagem{
+    margin-top: 65px;
+    margin-bottom: 15px;
+    align-items: center;
+    text-align: center;
+}
+
 .btn-voltar { 
     margin: 23px 0 22px 49px;
     text-align: center;
@@ -61,4 +80,46 @@ body {
     background-color: transparent;
     text-decoration: none;
     margin-bottom: 29px;
+}
+.ac{
+    font-family: "Inter", system-ui;
+    font-size: 65px;
+    text-align: center;
+    color: #6671DB;
+    font-weight: 650;
+}
+.q{
+    font-family: "Inter", system-ui;
+    font-size: 65px;
+    text-align: center;
+    color: #8067DC;
+    font-weight: 650;
+}
+.i{
+    font-family: "Inter", system-ui;
+    font-size: 65px;
+    text-align: center;
+    color: #6894DD;
+    font-weight: 650;
+}
+.e{
+    font-family: "Inter", system-ui;
+    font-size: 65px;
+    text-align: center;
+    color: #67B7DC;
+    font-weight: 650;
+}
+.ad{
+    font-family: "Inter", system-ui;
+    font-size: 65px;
+    text-align: center;
+    color: #A267DB;
+    font-weight: 650;
+}
+.p{
+    font-family: "Inter", system-ui;
+    font-size: 65px;
+    text-align: center;
+    color: #C667DB;
+    font-weight: 650;
 }

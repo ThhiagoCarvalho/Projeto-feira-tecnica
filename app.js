@@ -4,6 +4,7 @@ const app = express();
 const portaServico = 3000;
 const RouterUsuario = require("./router/RouterUsuario");
 const RouterResposta = require("./router/RouterResposta");
+const RouterQuestao = require("./router/RouterQuestao")
 
 app.use(express.json());
 app.use(express.static('js'));
@@ -19,9 +20,12 @@ app.get('/', (req, res) => {
 
 const roteadorUsuario = new RouterUsuario();
 const roteadorResposta = new RouterResposta();
+const roteadorQuestao = new RouterQuestao()
 
 app.use('/usuarios', roteadorUsuario.criarRotasUsuarios());
 app.use('/respostas', roteadorResposta.criarRotasResposta());
+app.use('/questoes', roteadorQuestao.criarRotasQuiz());
+
 
 
 app.listen(portaServico, () => {

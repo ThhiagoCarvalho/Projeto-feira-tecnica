@@ -20,18 +20,55 @@
     <script>
         let caixaPergunta = document.getElementById("caixaPergunta");
         let cursoReferenciado = 1000; // ID do curso referenciado
-
+        let vetorCursos = {}
+        let idCursoNovos = 0
+        // variavel resposnval para garantir que cada curso possam se repetir 
+        let repeticaoCursoNovos = 1
+        // 
         const pontosUsuario = {
-            Pontos_Informatica: 0,
-            Pontos_Eletronica: 0,
-            Pontos_Publicidade: 0,
+            Pontos_Informatica: 1,
+            Pontos_Eletronica: 1,
+            Pontos_Publicidade: 1,
             Pontos_Administracao: 0,
             Pontos_Quimica: 0,
             Pontos_Analises: 0 
         };
 
         // Loop para buscar as perguntas e respostas
-        for (let contadorPosicao = 1; contadorPosicao <= 10; contadorPosicao++) {
+        for (let contadorPosicao = 1; contadorPosicao <= 9; contadorPosicao++) {
+
+            // se existir conteudoo no vetor cursos 
+            if  (vetorCursos)  { 
+                if (vetorCursos.count == 2){
+                //verifica a quatidade de cursos guardadaos no vetror para entrar nesse if a fim de cada questao de cada matearia se repetir 2 vezes
+
+                if (repeticaoCursoNovos == 0 || repeticaoCursoNovos == 2 ){ 
+                    //srotei das primeiras novas questao referenciado ao novo curso
+                                    // como evitar repeticao ????
+
+                cursoReferenciado  = random ( vetorCursos )
+                repeticaoCursoNovos  = 1
+                // zera para que possa garantir as proximas pergutnas de outras materias terem opurtunidades de repetir duas vezes
+
+                }else  {
+                repeticaoCursoNovos +=1 
+                }
+
+            //verifica a quatidade de cursos guardadaos no vetror para entrar nesse if a fim de cada questao de cada matearia se repetir 3 vezes
+            }if (vetorCursos.count == 3){
+                if (repeticaoCursoNovos == 0 || repeticaoCursoNovos == 3 ){ 
+                    //srotei das primeiras novas questao referenciado ao novo curso
+                    // como evitar repeticao ????
+
+                    cursoReferenciado  = random ( vetorCursos )
+                    repeticaoCursoNovos  = 1
+                    // zera para que possa garantir as proximas pergutnas de outras materias terem opurtunidades de repetir duas vezes
+
+                }else  {
+                repeticaoCursoNovos +=1 
+                }
+
+            }
             let uri_get_questao = `/perguntas/${contadorPosicao}/${cursoReferenciado}`;
             
             // Fetch da pergunta
@@ -59,12 +96,13 @@
 
             // Mudança do curso após a 3ª questão
             if (contadorPosicao == 3) {
-                let uri_get_curso = `/perguntas/${contadorPosicao}`; // Corrigido para não usar idCursoRef
+                let uri_get_curso = `/perguntas/${contadorPosicao}/${idCursoRef}`; // Corrigido para não usar idCursoRef
 
                 fetch(uri_get_curso)
                     .then((response) => response.json())
                     .then((data) => {
-                        cursoReferenciado = data.dados.idCursoRef;
+                        vetorCursos = data
+
                         console.log("Novo curso referenciado:", cursoReferenciado);
                     })
                     .catch((error) => {
@@ -72,7 +110,7 @@
                     });
             }
         }
-
+    }
         // Processamento das respostas e adição de botões
         function processarRespostas(txtResposta, posicao) {
             const divRespostas = document.querySelector('.respostas');
@@ -129,11 +167,15 @@
         // Função para salvar os pontos
         function salvarPontos(valorResposta) {
             console.log("Pontos recebidos:", valorResposta);
+            /* a requisao chega como  
             
+            status : true
+            dados : "ifnormatica"
+            */
             valorResposta.dados.forEach((valor) => {
-                for (let materiaPontos in valor) {
-                    if (pontosUsuario[materiaPontos] !== undefined) {
-                        pontosUsuario[materiaPontos] += valor[materiaPontos];
+                for (let campoUsuario in pontosUsuario) {
+                    if (campoUsuario == valor) {
+                        pontosUsuario[campoUsuario] += 1;
                     }
                 }
             });

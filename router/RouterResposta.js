@@ -1,6 +1,5 @@
 const express = require('express');
 const controlResposta = require("../controle/controlResposta")
-
 const MiddlewareResposta = require("../middleware/middlewareResposta")
 
 
