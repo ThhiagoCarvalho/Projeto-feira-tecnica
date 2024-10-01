@@ -18,17 +18,22 @@
     <button class="btn-voltar" id="btnVoltar" type="button">Voltar</button> <!-- Botão para voltar -->
 
     <script>
+          const bntVoltar = document.getElementById("btnVoltar")
+        bntVoltar.onclick = function ( ) { 
+            window.location = "../html/paginaInicial.html"
+        }
+
         let caixaPergunta = document.getElementById("caixaPergunta");
-        let cursoReferenciado = 1000; // ID do curso referenciado
+        let cursoReferenciado = 1000; // ID do curso indefinido
         let vetorCursos = {}
+
         let idCursoNovos = 0
-        // variavel resposnval para garantir que cada curso possam se repetir 
-        let repeticaoCursoNovos = 1
-        // 
+        let repeticaoCursoNovos = 0 // Controla a repetição dos cursos
+
         const pontosUsuario = {
-            Pontos_Informatica: 1,
-            Pontos_Eletronica: 1,
-            Pontos_Publicidade: 1,
+            Pontos_Informatica: 0,
+            Pontos_Eletronica: 0,
+            Pontos_Publicidade: 0,
             Pontos_Administracao: 0,
             Pontos_Quimica: 0,
             Pontos_Analises: 0 
@@ -37,39 +42,22 @@
         // Loop para buscar as perguntas e respostas
         for (let contadorPosicao = 1; contadorPosicao <= 9; contadorPosicao++) {
 
-            // se existir conteudoo no vetor cursos 
-            if  (vetorCursos)  { 
-                if (vetorCursos.count == 2){
-                //verifica a quatidade de cursos guardadaos no vetror para entrar nesse if a fim de cada questao de cada matearia se repetir 2 vezes
-
-                if (repeticaoCursoNovos == 0 || repeticaoCursoNovos == 2 ){ 
-                    //srotei das primeiras novas questao referenciado ao novo curso
-                                    // como evitar repeticao ????
-
-                cursoReferenciado  = random ( vetorCursos )
-                repeticaoCursoNovos  = 1
-                // zera para que possa garantir as proximas pergutnas de outras materias terem opurtunidades de repetir duas vezes
-
-                }else  {
-                repeticaoCursoNovos +=1 
+            // Verifica o vetorCursos para sorteio e repetição de cursos
+            if (vetorCursos) {
+                if (vetorCursos.length === 2 && (repeticaoCursoNovos === 0 || repeticaoCursoNovos === 2)) {
+                    cursoReferenciado = random(vetorCursos); // Sorteio do curso
+                    repeticaoCursoNovos = 1;
+                } else if (vetorCursos.length === 3 && (repeticaoCursoNovos === 0 || repeticaoCursoNovos === 3)) {
+                    cursoReferenciado = random(vetorCursos);
+                    repeticaoCursoNovos = 1;
+                } else {
+                    repeticaoCursoNovos += 1;
                 }
-
-            //verifica a quatidade de cursos guardadaos no vetror para entrar nesse if a fim de cada questao de cada matearia se repetir 3 vezes
-            }if (vetorCursos.count == 3){
-                if (repeticaoCursoNovos == 0 || repeticaoCursoNovos == 3 ){ 
-                    //srotei das primeiras novas questao referenciado ao novo curso
-                    // como evitar repeticao ????
-
-                    cursoReferenciado  = random ( vetorCursos )
-                    repeticaoCursoNovos  = 1
-                    // zera para que possa garantir as proximas pergutnas de outras materias terem opurtunidades de repetir duas vezes
-
-                }else  {
-                repeticaoCursoNovos +=1 
-                }
-
             }
+
             let uri_get_questao = `/perguntas/${contadorPosicao}/${cursoReferenciado}`;
+            
+
             
             // Fetch da pergunta
             fetch(uri_get_questao)
@@ -95,14 +83,13 @@
                 });
 
             // Mudança do curso após a 3ª questão
-            if (contadorPosicao == 3) {
-                let uri_get_curso = `/perguntas/${contadorPosicao}/${idCursoRef}`; // Corrigido para não usar idCursoRef
+            if (contadorPosicao === 3) {
+                let uri_get_curso = `/perguntas/${contadorPosicao}/${idCursoNovos}`;
 
                 fetch(uri_get_curso)
                     .then((response) => response.json())
                     .then((data) => {
-                        vetorCursos = data
-
+                        vetorCursos = data;
                         console.log("Novo curso referenciado:", cursoReferenciado);
                     })
                     .catch((error) => {
@@ -110,15 +97,18 @@
                     });
             }
         }
-    }
+
+        finalizarQuiz ()
+
+
         // Processamento das respostas e adição de botões
-        function processarRespostas(txtResposta, posicao) {
+        function processarRespostas(respostas, posicao) {
             const divRespostas = document.querySelector('.respostas');
             divRespostas.innerHTML = ''; // Limpa as respostas anteriores
 
-            txtResposta.dados.forEach((valor) => {
+            respostas.forEach((resposta) => {
                 const botaoResposta = document.createElement("button");
-                botaoResposta.textContent = valor;
+                botaoResposta.textContent = resposta.texto;
                 botaoResposta.classList.add('resposta');
                 
                 botaoResposta.onclick = function () {
@@ -129,25 +119,6 @@
                         .then((response) => response.json())
                         .then((data) => {
                             salvarPontos(data);
-
-                            // Enviar pontos após a 3ª questão
-                            if (posicao > 3) {
-                                let uri_enviar_pontos = `/pontos`; // Altera para a rota de cálculo
-                                fetch(uri_enviar_pontos, {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify(pontosUsuario) // Passando os pontos
-                                })
-                                .then((response) => response.json())
-                                .then((data) => {
-                                    console.log("Pontos enviados:", data);
-                                })
-                                .catch((error) => {
-                                    console.error("Error ao enviar pontos:", error);
-                                });
-                            }
                         })
                         .catch((error) => {
                             console.error("Error:", error);
@@ -161,26 +132,35 @@
         // Processamento da pergunta
         function processarPerguntas(data) {
             let txtPergunta = data.dados;
-            caixaPergunta.textContent = txtPergunta; // Atualiza a pergunta na tela
+            caixaPergunta.textContent = txtPergunta;
         }
 
         // Função para salvar os pontos
-        function salvarPontos(valorResposta) {
-            console.log("Pontos recebidos:", valorResposta);
-            /* a requisao chega como  
-            
-            status : true
-            dados : "ifnormatica"
-            */
-            valorResposta.dados.forEach((valor) => {
-                for (let campoUsuario in pontosUsuario) {
-                    if (campoUsuario == valor) {
-                        pontosUsuario[campoUsuario] += 1;
-                    }
-                }
-            });
-            
+        function salvarPontos(resposta) {
+            console.log("Pontos recebidos:", resposta);
+
+            // Atualiza o campo correspondente no objeto pontosUsuario
+            pontosUsuario[resposta.pontos] += 1;
+
             console.log("Pontos atualizados:", pontosUsuario);
+        }
+
+
+
+        function finalizarQuiz() {
+            // Enviar os pontos para o servidor ou mostrar um resumo
+            fetch(`/respostas/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(pontosUsuario)
+            })
+            .then(response => response.json())
+            .then(data => {
+                window.location.href = "../html/telaResultados"; // Altere para a URL da tela inicial do seu quiz
+            })
+            .catch(error => console.error("Erro ao finalizar o quiz:", error));
         }
     </script>
 </body>

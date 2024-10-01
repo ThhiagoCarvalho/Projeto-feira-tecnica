@@ -6,6 +6,7 @@ const MeuTokenJWT = require("../modelo/MeuTokenJWT")
 module.exports = class ControlUsuario {
 
     async controle_usuario_post (request , response ) { 
+        console.log ("requiestr >>>>>>" + request)
         const nomeUsuario = request.body.nomeUsuario
         const emailUsuario = request.body.emailUsuario
         const senhaUsuario = request.body.senhaUsuario
