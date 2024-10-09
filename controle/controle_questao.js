@@ -51,9 +51,11 @@ module.exports = class ControlQuestao {
 
     async controle_get_Resposta (request , response)  {
         const idCursoRef = request.params.idCursoRef
+        const botaoValor = request.params.posicao
 
         const questao = new Questao()
         questao.ID_Curso = idCursoRef
+        questao.Botao_Valor = botaoValor
 
         const respostaExiste  = await questao.getRespostas();
 
@@ -92,5 +94,35 @@ module.exports = class ControlQuestao {
 
     }
 
+
+
+    async controle_get_Cursos (request , response)  {
+        const Pontos_Informatica = request.body.pontosUsuario
+        const Pontos_Eletronica = request.body.Pontos_Eletronica
+        const Pontos_Publicidade = request.body.Pontos_Publicidade
+        const Pontos_Administracao = request.body.Pontos_Administracao
+        const Pontos_Quimica = request.body.Pontos_Quimica
+        const Pontos_Analises = request.body.Pontos_Analises
+   
+        const questao = new Questao()
+        questao.Pontos_Informatica = Pontos_Informatica
+        questao.Pontos_Eletronica = Pontos_Eletronica
+        questao.Pontos_Publicidade = Pontos_Publicidade
+        questao.Pontos_Administracao = Pontos_Administracao
+        questao.Pontos_Quimica = Pontos_Quimica
+        questao.Pontos_Analises = Pontos_Analises
+
+        const questaoExiste  = await questao.getCurso();
+
+        const objResposta = {
+            cod: 1,
+            status: questaoExiste,
+            msg: questaoExiste ? 'Sucesso ao buscar' : 'Erro ao buscar' ,
+            dados : questaoExiste
+        };
+            
+        response.status(200).send(objResposta);
+
+    }
 
 }

@@ -19,7 +19,7 @@
 
 
 .faixa {
-    width: 1366px;
+   
     height: 168px;
     background: var(--TOQUECOR, #3F7856);    
 }
@@ -41,8 +41,6 @@ p {
     font-family: "Inter", system-ui;
     font-size: 50px;
     font-weight: 400;
-
-
 }
 
 .introducao { 
@@ -69,6 +67,8 @@ p {
 
 /* Estilo geral do card */
 .card {
+  
+    justify-content: center;
     display: flex;
     align-items: center;
     padding: 10px;
@@ -77,14 +77,13 @@ p {
 
 /* Estilo para a imagem de perfil */
 .profile-img img {
-    
     border-radius: 50%;
-    width: 240px;  /* ajuste o tamanho conforme necessário */
-    height: 240px; /* ajuste o tamanho conforme necessário */
-    object-fit: cover; /* para manter a proporção da imagem */
+    width: 240px;  /* ajuste o tamanho conforme necess�rio */
+    height: 240px; /* ajuste o tamanho conforme necess�rio */
+    object-fit: cover; /* para manter a propor��o da imagem */
 }
 
-/* Estilo para o conteúdo de texto */
+/* Estilo para o conte�do de texto */
 .info {
     
     align-self: flex-end;
@@ -93,28 +92,24 @@ p {
 
 .container-direito .info { 
     margin-left: 350px;
-    
+    align-self: flex-end;
+
 }
 
 .container-direito img { 
+    
     margin-left: 30px;
     border-radius: 50%;
     width: 245px;
-height: 245px;
+    height: 245px;
 }
 
 .container-direito a  { 
     direction: rtl;
-
     text-align: right;
     word-wrap:break-word;
 }
 
-.info-direita {
-    
-    align-self: flex-end;
-    margin-left: 150px;
-}
 .container-esquerdo {
     margin: 0 0 30px 40px; /* Margem esquerda e inferior */
     width: 1055px;
@@ -123,48 +118,43 @@ height: 245px;
 
 
 .container-direito {
-    align-self: flex-end; /* Alinha este container à direita */
-    margin: 0 40px 30px 0; /* Ajusta a margem direita */
+    text-align: right;
+    align-self: flex-end; /* Alinha este container � direita */
+     /* Ajusta a margem direita */
     width: 1055px;
     height: 306px;
 }
-
 
 .card-container {
     width: 100%; /* Preenche toda a largura do pai */
     display: flex; /* Para usar flexbox */
     flex-direction: column; /* Colocar os itens em coluna */
-    align-items: flex-start; /* Alinhar os itens à esquerda */
+    justify-content: center; /* Alinhar os itens � esquerda */
 }
 /* Nome */
 .nomepessoa {
-    color: #3F7856; /* ajuste a cor conforme necessário */
+    color: #3F7856; /* ajuste a cor conforme necess�rio */
     margin: 0;
     font-family: "Fjalla One", system-ui;
     font-size: 38px;
     font-weight: 600;
 }
 
-/* Texto de descrição */
+/* Texto de descri��o */
 .info p {
     margin: 5px 0;
     text-align: justify;
     font-family: "Inter", system-ui;
-
-    
     color: #000;
-
     font-size: 40px;
     font-weight: 400;
     line-height: 48px; /* 120% */
 }
 
-/* Link para o currículo */
 .info a {
-    color: #3F7856; /* ajuste a cor conforme necessário */
+    color: #3F7856; /* ajuste a cor conforme necess�rio */
     text-decoration: none;
     font-family: "Inter", system-ui;
-
     font-size: 30px;
     font-weight: 600;
 }
@@ -174,19 +164,8 @@ height: 245px;
     text-decoration: none;
 }
 
-
-
-.container-direito .nomepessoa  {
-    text-align: right;
-}
-
-
-
-
 .container-direito .info  {
     direction: rtl;
-
-    text-align: right;
     word-wrap:break-word;
 
 }

@@ -1,34 +1,32 @@
 const express = require('express');
 const RespostaUsuario = require("../modelo/RespostasUsuarios");
-const MeuTokenJWT = require("../modelo/MeuTokenJWT")
 
 module.exports = class ControlResposta {
+    async controle_resposta_post(request, response) {
+        try {
 
-    async controle_resposta_post (request , response)  {
-        try{
-            const idUsuarioResposta = request.body.idUsuarioResposta
-            const Data_Teste = request.body.data
-            const Pontos_Informatica = request.body.Pontos_Informatica
-            const Pontos_Eletronica = request.body.Pontos_Eletronica
-            const Pontos_Publicidade = request.body.Pontos_Publicidade
-            const Pontos_Administracao = request.body.Pontos_Administracao
-            const Pontos_Quimica = request.body.Pontos_Quimica
-            const Pontos_Analises = request.body.Pontos_Analises
+            const Respostas_idUsuario = request.body.Respostas_idUsuario; // Captura todos os pontos de uma vez
+            const pontos = request.body.pontosUsuario;
+
+            const Pontos_Informatica = pontos.Pontos_Informatica
+            const Pontos_Eletronica = pontos.Pontos_Eletronica
+            const Pontos_Publicidade = pontos.Pontos_Publicidade
+            const Pontos_Administracao = pontos.Pontos_Administracao
+            const Pontos_Quimica = pontos.Pontos_Quimica
+            const Pontos_Analises = pontos.Pontos_Analises_Clinicas
 
 
-            const respUsuario = new RespostaUsuario ()
-            
-            respUsuario.Respostas_idUsuario = idUsuarioResposta
-            respUsuario.Data_Teste = Data_Teste
+
+            const respUsuario = new RespostaUsuario();
+            respUsuario.Respostas_idUsuario = Respostas_idUsuario
             respUsuario.Pontos_Informatica = Pontos_Informatica
             respUsuario.Pontos_Eletronica = Pontos_Eletronica
             respUsuario.Pontos_Publicidade = Pontos_Publicidade
             respUsuario.Pontos_Administracao = Pontos_Administracao
             respUsuario.Pontos_Quimica = Pontos_Quimica
-            respUsuario.Pontos_Analises= Pontos_Analises
-            
+            respUsuario.Pontos_Analises = Pontos_Analises 
 
-            const cadastrarResposta =  await respUsuario.cadastrarResposta ()
+            const cadastrarResposta = await respUsuario.cadastrarResposta();
 
             const objResposta = {
                 cod: 1,
@@ -36,87 +34,34 @@ module.exports = class ControlResposta {
                 msg: cadastrarResposta ? 'Resposta salva com sucesso' : 'Erro ao salvar'
             };
 
-            response.status(200).send(objResposta);
+            response.status(200).json(objResposta); // Alterado para enviar JSON
 
-        }catch (error) {
-            console.log("Errro >>>" , error)
-            return false
+        } catch (error) {
+            console.log("Erro >>>", error);
+            response.status(500).json({ message: 'Erro interno do servidor', error: error.message }); // Adicionado tratamento de erro
         }
     }
 
-    async controle_buscarHistorico (request , response) {
-        try {
-            const idUsuarioResp = request.params.idRespostas_idUsuario
-            
-            const respUsuario = new RespostaUsuario ()
-            respUsuario.Respostas_idUsuario = idUsuarioResp
-            const exebirRespostas =  await respUsuario.buscarRespostas ()
+    async controle_buscarHistorico(request, response) {
+      try {
+        const Respostas_idUsuario = request.body.Respostas_idUsuario; // Captura todos os pontos de uma vez
 
-            const objResposta = {
-                status: true,
-                dados : exebirRespostas
-            };
+        const respUsuario = new RespostaUsuario();
+        respUsuario.Respostas_idUsuario = Respostas_idUsuario; // Atribui o email ao objeto respUsuario
+          
+        const exebirRespostas = await respUsuario.buscarRespostas(); // Chama o método para buscar respostas
 
-            response.status(200).send(objResposta);
-
-
-        }catch (error) {
-            console.log("Errro >>>" , error)
-            return false
-        }
-
-    }
-
-
-    async controle_buscarPerguntas (request , response) {
-        try {
-            const idPergunta = request.params.idPergunta
-            
-            const respUsuario = new RespostaUsuario ()
-            respUsuario.Respostas_idUsuario = idUsuarioResp
-            const exebirRespostas =  await respUsuario.buscarRespostas ()
-
-            const objResposta = {
-                status: true,
-                dados : exebirRespostas
-            };
-
-            response.status(200).send(objResposta);
-
-
-        }catch (error) {
-            console.log("Errro >>>" , error)
-            return false
-        }
-
-    }
-
-    async controle_buscarRespostas (request , response) {
-        try {
-            const idUsuarioResp = request.params.idRespostas_idUsuario
-            
-            const respUsuario = new RespostaUsuario ()
-            respUsuario.Respostas_idUsuario = idUsuarioResp
-            const exebirRespostas =  await respUsuario.buscarRespostas ()
-
-            const objResposta = {
-                status: true,
-                dados : exebirRespostas
-            };
-
-            response.status(200).send(objResposta);
-
-
-        }catch (error) {
-            console.log("Errro >>>" , error)
-            return false
-        }
-
-    }
-
-
-
-
+        const objResposta = {
+            status: exebirRespostas,
+            dados: exebirRespostas
+        };
+  
+          response.status(200).json(objResposta); // Envia a resposta em formato JSON
+  
+      } catch (error) {
+          console.log("Erro >>>", error);
+          response.status(500).json({ message: 'Erro interno do servidor', error: error.message }); // Adiciona tratamento de erro
+      }
+  }
 
 }
-

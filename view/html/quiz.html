@@ -2,33 +2,35 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=0.3">
     <link rel="stylesheet" type="text/css" href="../css/quiz.css" media="screen" />
     <title>Quiz</title>
 </head>
 <body>
-    <div class="faixa"></div>
-
-    <div class="questao" id="caixaPergunta">
-        <p>Se quiser sim</p> <!-- Texto da pergunta que será atualizado via JS -->
+    <div class="faixa"> 
+        <button class="btn-voltar" id= "btnVoltar" type="button">< </button>
     </div>
 
-    <div class="respostas"></div> <!-- Local onde as respostas serão inseridas dinamicamente -->
+    <div class="questao" id="caixaPergunta">
+        <p></p>
+    </div>
 
-    <button class="btn-voltar" id="btnVoltar" type="button">Voltar</button> <!-- Botão para voltar -->
+    <div class="respostas-container" >
+        <div class="respostas">
+        </div>
+    </div>
 
     <script>
-          const bntVoltar = document.getElementById("btnVoltar")
-        bntVoltar.onclick = function ( ) { 
-            window.location = "../html/paginaInicial.html"
-        }
+        const btnVoltar = document.getElementById("btnVoltar");
+        const caixaPergunta = document.getElementById("caixaPergunta");
+        const respostasDiv = document.querySelector('.respostas');
 
-        let caixaPergunta = document.getElementById("caixaPergunta");
-        let cursoReferenciado = 1000; // ID do curso indefinido
-        let vetorCursos = {}
-
-        let idCursoNovos = 0
-        let repeticaoCursoNovos = 0 // Controla a repetição dos cursos
+        let cursoReferenciado = 1000;
+        let vetorCursos = [];
+        let repeticaoCursoNovos = 0;
+        let VetorPosicao = 0;
+        const emailUsuario = localStorage.getItem ("emailUsuario")
+        console.log("email usuario ----->",emailUsuario);
 
         const pontosUsuario = {
             Pontos_Informatica: 0,
@@ -36,132 +38,193 @@
             Pontos_Publicidade: 0,
             Pontos_Administracao: 0,
             Pontos_Quimica: 0,
-            Pontos_Analises: 0 
+            Pontos_Analises_Clinicas: 0 
         };
 
-        // Loop para buscar as perguntas e respostas
-        for (let contadorPosicao = 1; contadorPosicao <= 9; contadorPosicao++) {
+        let currentQuestion = 1; // Variável para a pergunta atual
+        const totalQuestions = 9;
 
-            // Verifica o vetorCursos para sorteio e repetição de cursos
-            if (vetorCursos) {
-                if (vetorCursos.length === 2 && (repeticaoCursoNovos === 0 || repeticaoCursoNovos === 2)) {
-                    cursoReferenciado = random(vetorCursos); // Sorteio do curso
-                    repeticaoCursoNovos = 1;
-                } else if (vetorCursos.length === 3 && (repeticaoCursoNovos === 0 || repeticaoCursoNovos === 3)) {
-                    cursoReferenciado = random(vetorCursos);
-                    repeticaoCursoNovos = 1;
-                } else {
-                    repeticaoCursoNovos += 1;
+        btnVoltar.onclick = function () { 
+            window.location = "../html/paginaInicial.html";
+        }
+
+        function embaralharArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        async function iniciarQuiz() {
+            await carregarPergunta(currentQuestion);
+        }
+
+        async function carregarPergunta() {
+            // Atualiza o curso referenciado antes da quarta pergunta
+            if (currentQuestion === 4 && vetorCursos.length === 0) { // Só faz isso na quarta questão se ainda não tem cursos carregados
+                try {
+                    let uri_get_curso = `/questao/perguntas/curso/`;
+                    const cursoResponse = await fetch(uri_get_curso, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(pontosUsuario)
+                    });
+                    const cursoData = await cursoResponse.json();
+                    
+                    if (cursoData.dados && Array.isArray(cursoData.dados)) {
+                        vetorCursos = embaralharArray(cursoData.dados);
+                        console.log("Cursos embaralhados:", vetorCursos);
+                        
+                    } else {
+                        console.error("Erro ao processar cursoData:", cursoData);
+                    }
+                } catch (error) {
+                    console.error("Erro ao enviar pontos:", error);
+                    return; // Evita continuar sem os cursos atualizados
+                }
+            }
+            if (vetorCursos.length > 0) { // Alterada a condição para verificar se vetorCursos não está vazio
+                cursoReferenciado = vetorCursos[VetorPosicao];
+                if ((vetorCursos.length === 2 && currentQuestion === 6) || (vetorCursos.length === 3 && (currentQuestion === 5 || currentQuestion === 7))) { // Condições consolidadas
+                    VetorPosicao++;
                 }
             }
 
-            let uri_get_questao = `/perguntas/${contadorPosicao}/${cursoReferenciado}`;
-            
+            console.log("Curso Referenciado ----->", cursoReferenciado);
 
-            
-            // Fetch da pergunta
-            fetch(uri_get_questao)
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data);
-                    processarPerguntas(data);
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
+            let uri_get_questao = `/questao/${currentQuestion}/${cursoReferenciado}`;
+            let uri_get_resposta = `/questao/respostas/${currentQuestion}/${cursoReferenciado}`;
 
-            // Fetch das respostas
-            let uri_get_resposta = `/respostas/${cursoReferenciado}`;
-            fetch(uri_get_resposta)
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data);
-                    processarRespostas(data, contadorPosicao);
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
+            try {
+                const [questaoResponse, respostaResponse] = await Promise.all([
+                    fetch(uri_get_questao),
+                    fetch(uri_get_resposta)
+                ]);
 
-            // Mudança do curso após a 3ª questão
-            if (contadorPosicao === 3) {
-                let uri_get_curso = `/perguntas/${contadorPosicao}/${idCursoNovos}`;
+                const questaoData = await questaoResponse.json();
+                const respostaData = await respostaResponse.json();
 
-                fetch(uri_get_curso)
-                    .then((response) => response.json())
-                    .then((data) => {
-                        vetorCursos = data;
-                        console.log("Novo curso referenciado:", cursoReferenciado);
-                    })
-                    .catch((error) => {
-                        console.error("Error:", error);
-                    });
+                console.log("Dados da questão:", questaoData);
+
+                processarPerguntas(questaoData);
+
+                if (respostaData.dados && Array.isArray(respostaData.dados)) {
+                    console.log("Dados das respostas:", respostaData.dados);
+                    processarRespostas(respostaData.dados);
+                    adicionarEventosDeClique();
+                } else {
+                    console.error("Erro: respostas não é um array:", respostaData);
+                }
+            } catch (error) {
+                console.error("Erro ao carregar pergunta/respostas:", error);
             }
         }
 
-        finalizarQuiz ()
-
-
-        // Processamento das respostas e adição de botões
-        function processarRespostas(respostas, posicao) {
-            const divRespostas = document.querySelector('.respostas');
-            divRespostas.innerHTML = ''; // Limpa as respostas anteriores
-
-            respostas.forEach((resposta) => {
-                const botaoResposta = document.createElement("button");
-                botaoResposta.textContent = resposta.texto;
-                botaoResposta.classList.add('resposta');
-                
-                botaoResposta.onclick = function () {
-                    let conteudoResposta = botaoResposta.textContent;
-
-                    let uri_get_pontoResposta = `/respostas/${posicao}/${conteudoResposta}`;
-                    fetch(uri_get_pontoResposta)
-                        .then((response) => response.json())
-                        .then((data) => {
-                            salvarPontos(data);
-                        })
-                        .catch((error) => {
-                            console.error("Error:", error);
-                        });
-                };
-
-                divRespostas.appendChild(botaoResposta);
-            });
-        }
-
-        // Processamento da pergunta
         function processarPerguntas(data) {
             let txtPergunta = data.dados;
             caixaPergunta.textContent = txtPergunta;
         }
 
-        // Função para salvar os pontos
+        function processarRespostas(respostas) {
+            respostasDiv.innerHTML = ''; 
+            
+            if (Array.isArray(respostas)) {
+                respostas.forEach((respostaObj, index) => {
+                    const botaoResposta = document.createElement("button");
+                    botaoResposta.textContent = respostaObj.Resposta;
+                    botaoResposta.classList.add('resposta');
+                    botaoResposta.dataset.index = index; 
+                    respostasDiv.appendChild(botaoResposta);
+                });
+            } else {
+                console.error("Erro: respostas não é um array:", respostas);
+            }
+        }
+
+        function adicionarEventosDeClique() {
+            const botoesRespostas = document.querySelectorAll('.resposta');
+
+            botoesRespostas.forEach((botao, index) => {
+                botao.addEventListener('click', async function () {
+                    let conteudoResposta = botao.textContent;
+                    console.log("pergunta:", conteudoResposta);
+                    let uri_get_pontoResposta = /questao/respostas/${currentQuestion}/${cursoReferenciado}/${encodeURIComponent(conteudoResposta)};
+                    try {
+                        const respostaPonto = await fetch(uri_get_pontoResposta);
+                        const dadosPonto = await respostaPonto.json();
+                        salvarPontos(dadosPonto);
+
+                        respostasDiv.innerHTML = '';
+                        caixaPergunta.textContent = "Carregando proxima pergunta...";
+
+                        currentQuestion++;
+                        console.log("Valor currentQuestion : ", currentQuestion);
+                        if (currentQuestion > totalQuestions) {
+                            finalizarQuiz();
+                        } else {
+                            await carregarPergunta(); // Chamando a função sem parâmetros
+                        }
+                    } catch (error) {
+                        console.error("Erro ao processar a resposta:", error);
+                    }
+                });
+            });
+        }
+
         function salvarPontos(resposta) {
             console.log("Pontos recebidos:", resposta);
 
-            // Atualiza o campo correspondente no objeto pontosUsuario
-            pontosUsuario[resposta.pontos] += 1;
+            // Verificação se a chave de pontos é válida
+            if (pontosUsuario.hasOwnProperty(resposta.dados)) { // Alterado para usar 'dados'
+                pontosUsuario[resposta.dados] += 1; // Alterado para 'dados'
+            } else {
+                console.error("Chave de pontos inválida:", resposta.dados); // Alterado para 'dados'
+            }
 
             console.log("Pontos atualizados:", pontosUsuario);
         }
 
+       function finalizarQuiz() {
+          if (emailUsuario) {
+              let rota = "/respostas";
+      
+              // Adiciona o email ao objeto pontosUsuario
+              const dadosEnvio = {
+                pontosUsuario, // Envia o vetor com os pontos
+                Respostas_idUsuario: emailUsuario // Envia o e-mail do usuário
+            };
+      
+              fetch(rota, {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(dadosEnvio) // envia o objeto com os pontos e o email
+              })
+              .then(response => {
+                  const contentType = response.headers.get("content-type");
+                  if (contentType && contentType.includes("application/json")) {
+                      return response.json();
+                  } else {
+                      throw new Error("Resposta não é JSON");
+                  }
+              })
+              .then(data => {
+                  window.location.href = "../html/historicoUsuario.html";
+              })
+              .catch(error => console.error("Erro ao finalizar o quiz:", error));
+          } else {
+              localStorage.setItem("pontos", JSON.stringify(pontosUsuario));
+              window.location.href = "../html/historicoUsuario.html";
+          }
+      }
 
 
-        function finalizarQuiz() {
-            // Enviar os pontos para o servidor ou mostrar um resumo
-            fetch(`/respostas/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(pontosUsuario)
-            })
-            .then(response => response.json())
-            .then(data => {
-                window.location.href = "../html/telaResultados"; // Altere para a URL da tela inicial do seu quiz
-            })
-            .catch(error => console.error("Erro ao finalizar o quiz:", error));
-        }
+
+        window.onload = iniciarQuiz;
     </script>
 </body>
 </html>

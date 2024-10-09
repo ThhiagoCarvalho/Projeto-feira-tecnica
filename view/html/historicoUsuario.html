@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=0.3">
     <title>Histórico</title>
     <link rel="stylesheet" href="../css/historicoUsuario.css" media="screen" />
 
@@ -16,95 +16,22 @@
 </head>
 <body>
     <div class="faixa"> 
-        <button class="btn-voltar" id="btnVoltar" type="button"><</button>
+        <button class="btn-voltar" id="btnVoltar" type="button">&lt;</button>
     </div>
 
     <!-- Seção do Gráfico -->
     <div id="chartdiv"></div>
     <style> 
         #chartdiv {
-            width: 100%;
+            width: 120%;
             height: 500px;
         }
     </style>
 
     <!-- Carousel do Bootstrap -->
     <div id="slide" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000" data-bs-pause="hover" data-bs-wrap="true">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <div class="imagem text-center"><img src="imagens/info.png" width="120" height="120" alt="Informática"></div>
-                <div class="i text-center fw-bold">INFORMÁTICA</div>
-                <p>
-                    O curso de informática oferece aos seus alunos um vasto conhecimento para 
-                    desenvolver programas em diversas linguagens de programações que acompanham 
-                    as tendências tecnológicas e do mercado de trabalho.
-                    Possibilitar o profissional formado atuar em empresas comerciais, industriais, 
-                    instituições de pesquisas e até mesmo como microempresário individual. Neste curso 
-                    o aluno é direcionado a pesquisar, entender, aplicar e aprender técnicas avançadas 
-                    de programação, que podem ser utilizadas no desenvolvimento de softwares voltados 
-                    para o gerenciamento da informação por meio de banco de dados, computação e animação 
-                    gráfica, técnicas básicas de desenvolvimentos de jogos e programação para internet (sites).
-                </p>
-            </div>
-            <div class="carousel-item">
-                <div class="imagem text-center"><img src="imagens/eletronica.png" width="140" height="140" alt="Eletrônica"></div>
-                <div class="e text-center fw-bold">ELETRÔNICA</div>
-                <p>
-                    O Curso Técnico em Eletrônica possui um currículo que atende às necessidades do mercado, 
-                    formando profissionais aptos para atuar com competência nesse setor. Um dos objetivos do 
-                    curso é formar um profissional que participe do desenvolvimento de projetos. Executa a 
-                    instalação e a manutenção de equipamentos e sistemas eletrônicos e de automação. Realiza 
-                    medições e testes com equipamentos eletrônicos. Executa procedimentos de controle de qualidade 
-                    e gestão da produção de equipamentos eletrônicos dentre outras atuações essenciais do mercado.
-                </p>
-            </div>
-            <div class="carousel-item">
-                <div class="imagem text-center"><img src="imagens/adm.png" width="170" height="120" alt="Administração"></div>
-                <div class="ad text-center fw-bold">ADMINISTRAÇÃO</div>
-                <p>
-                    Administrar, planejar, organizar e controlar as atividades empresariais, 
-                    a fim de compreender a análise da produtividade, rentabilidade e controle de resultados.
-                    Esses são alguns dos objetivos do curso de Técnico em Administração de Empresas,
-                    nos quais o aluno busca motivação para o estudo da administração pública e privada de pequenas, 
-                    médias e grandes empresas e de toda a complexa realidade que as envolve.
-                </p>
-            </div>
-            <div class="carousel-item">
-                <div class="imagem text-center"><img src="imagens/ac.png" width="110" height="140" alt="Análises Clínicas"></div>
-                <div class="ac text-center fw-bold">ANÁLISES CLÍNICAS</div>
-                <p>
-                    O Curso Técnico em Análises Clínicas foi implantado para atender 
-                    as necessidades na área das investigações médicas e biológicas.
-                    Prepara profissionais de nível médio com formação específica em 
-                    Análises Clínicas, orientados e treinados para ocuparem postos 
-                    em laboratórios, além de trabalharem no desenvolvimento de pesquisas 
-                    acadêmicas.
-                </p>
-            </div>
-            <div class="carousel-item">
-                <div class="imagem text-center"><img src="imagens/quimica.png" width="120" height="120" alt="Química"></div>
-                <div class="q text-center fw-bold">QUÍMICA</div>
-                <p>
-                    Desenvolver competências para analisar, pesquisar e produzir materiais 
-                    e processos químicos nos setores de alimentos de farmácia, cosméticos, 
-                    petroquímicos e de controle ambiental.
-                    Sempre ampliando os limites do conhecimento teórico e científico dos 
-                    nossos alunos para atender à demanda por bens e serviços mais adequados 
-                    ao homem e ao meio ambiente.
-                </p>
-            </div>
-            <div class="carousel-item">
-                <div class="imagem text-center"><img src="imagens/publicidade.png" width="120" height="120" alt="Publicidade"></div>
-                <div class="p text-center fw-bold">PUBLICIDADE</div>
-                <p>
-                    O Curso Técnico em Publicidade busca integrar esforços coletivos para 
-                    tornar o aluno apto a desenvolver a criatividade, os espírito inventivo, 
-                    sua própria concepção em relação a produtos e serviços.
-                    O domínio do processo de produção através da criação e do marketing, a 
-                    pesquisa de mercado, mídias e a produção gráfica audiovisual são os principais 
-                    focos dos nossos alunos.
-                </p>
-            </div>
+        <div class="carousel-inner" id="carouselContent">
+            <!-- Conteúdo será injetado via JavaScript -->
         </div>
         <!-- Controles do Carousel -->
         <button class="carousel-control-prev" type="button" data-bs-target="#slide" data-bs-slide="prev">
@@ -128,90 +55,148 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+       const emailUsuario = localStorage.getItem("emailUsuario");
+       let pontosUsuarios = null;
+       
+        function processarPontos  () { 
+            const rota = `/respostas `
 
-document.addEventListener('DOMContentLoaded', function () {
-    var myCarousel = document.querySelector('#slide');
-    var carousel = new bootstrap.Carousel(myCarousel, {
-        interval: 3000, // Intervalo em milissegundos
-        ride: 'carousel',
-        pause: 'hover',
-        wrap: true,
-        touch: true
-    });
-  });
-        // Função para o botão "Voltar"
-        const btnVoltar = document.getElementById("btnVoltar");
-        btnVoltar.onclick = function () { 
-            window.location = "paginaInicial.html";
+            fetch(rota, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(emailUsuario) // envia o objeto com os pontos e o email
+            }).then((response) => {
+                return response.json();
+            }).then((data) => {
+                if (response.status == true) {
+                    pontosUsuarios = data.dados
+                } else {
+                    console.error("Erro ao buscar os pontos do banco");
+                }
+            }).catch((error) => {
+                console.log("Error ao buscar categorias:", error);
+            });
+                 
         }
+        document.addEventListener('DOMContentLoaded', async function () {
+           
 
-        // Inicialização do amCharts
-        am5.ready(function() {
-            // Criar elemento root
-            var root = am5.Root.new("chartdiv");
-
-            // Definir temas
-            root.setThemes([
-                am5themes_Animated.new(root)
-            ]);
-
-            // Criar gráfico de pizza
-            var chart = root.container.children.push(am5percent.PieChart.new(root, {
-                layout: root.verticalLayout
-            }));
-
-            // Criar série
-            var series = chart.series.push(am5percent.PieSeries.new(root, {
-                valueField: "value",
-                categoryField: "category"
-            }));
-
-            // Definir dados iniciais
-            var data = [
-                { value: 10, category: "Eletrônica" },
-                { value: 9, category: "Informática" },
-                { value: 6, category: "Análises Clínicas" },
-                { value: 5, category: "Química" },
-                { value: 4, category: "Administração" },
-                { value: 3, category: "Publicidade" },
-            ];
-
-            series.data.setAll(data);
-
-            // Criar legenda
-            var legend = chart.children.push(am5.Legend.new(root, {
-                centerX: am5.percent(50),
-                x: am5.percent(50),
-                marginTop: 15,
-                marginBottom: 15
-            }));
-
-            legend.data.setAll(series.dataItems);
-
-            // Variável para armazenar a última fatia clicada (opcional)
-            var previousSlice = null;
-
-            series.appear(1000, 100);
-
-            // Função para atualizar a legenda após alterações nos dados
-            function updateLegend() {
-                legend.data.setAll(series.dataItems);
+            if (emailUsuario) {
+                try {
+                    processarPontos ()
+                } catch (error) {
+                    console.error("Erro na requisição fetch:", error);
+                }
+            } else {
+                pontosUsuarios = JSON.parse(localStorage.getItem("pontos"));
             }
 
-            // Ações de Botões (Opcional: Se você quiser adicionar interações com botões)
-            // Exemplo:
-            /*
-            document.getElementById("randomize").addEventListener("click", function() {
-                data.forEach(item => {
-                    item.value = Math.floor(Math.random() * 100) + 1;
-                });
-                series.data.setAll(data);
-                updateLegend();
-            });
-            */
-        }); // end am5.ready()
+            if (pontosUsuarios) {
+                var root = am5.Root.new("chartdiv");
 
-        
+                root.setThemes([
+                    am5themes_Animated.new(root)
+                ]);
+
+                var chart = root.container.children.push(am5percent.PieChart.new(root, {
+                    layout: root.verticalLayout
+                }));
+
+                var series = chart.series.push(am5percent.PieSeries.new(root, {
+                    valueField: "value",
+                    categoryField: "category"
+                }));
+
+                var data = [];
+
+                if (pontosUsuarios.Pontos_Eletronica > 0) {
+                    data.push({ value: pontosUsuarios.Pontos_Eletronica, category: "Eletrônica" });
+                }
+                if (pontosUsuarios.Pontos_Informatica > 0) {
+                    data.push({ value: pontosUsuarios.Pontos_Informatica, category: "Informática" });
+                }
+                if (pontosUsuarios.Pontos_Analises_Clinicas > 0) {
+                    data.push({ value: pontosUsuarios.Pontos_Analises_Clinicas, category: "Análises Clínicas" });
+                }
+                if (pontosUsuarios.Pontos_Quimica > 0) {
+                    data.push({ value: pontosUsuarios.Pontos_Quimica, category: "Química" });
+                }
+                if (pontosUsuarios.Pontos_Publicidade > 0) {
+                    data.push({ value: pontosUsuarios.Pontos_Publicidade, category: "Publicidade" });
+                }
+                if (pontosUsuarios.Pontos_Administracao > 0) {
+                    data.push({ value: pontosUsuarios.Pontos_Administracao, category: "Administração" });
+                }
+
+                series.data.setAll(data);
+
+                // Montagem do carousel com base nos pontos
+                const carouselContent = document.getElementById("carouselContent");
+                let activeSet = false;
+
+                const cursos = [
+                    {
+                        pontos: pontosUsuarios.Pontos_Informatica,
+                        imagem: "../html/logos/informatica.jpeg",
+                        nome: "INFORMÁTICA",
+                        descricao: "O curso de informática oferece aos seus alunos um vasto conhecimento para desenvolver programas em diversas linguagens de programações que acompanham as tendências tecnológicas e do mercado de trabalho. Possibilitar o profissional formado atuar em empresas comerciais, industriais, instituições de pesquisas e até mesmo como microempresário individual. Neste curso o aluno é direcionado a pesquisar, entender, aplicar e aprender técnicas avançadas de programação, que podem ser utilizadas no desenvolvimento de softwares voltados para o gerenciamento da informação por meio de banco de dados, computação e animação gráfica, técnicas básicas de desenvolvimentos de jogos e programação para internet (sites)."
+                    },
+                    {
+                        pontos: pontosUsuarios.Pontos_Eletronica,
+                        imagem: "../html/logos/eletronica.jpeg",
+                        nome: "ELETRÔNICA",
+                        descricao: "O Curso Técnico em Eletrônica possui um currículo que atende às necessidades do mercado, formando profissionais aptos para atuar com competência nesse setor. Um dos objetivos do curso é formar um profissional que participe do desenvolvimento de projetos. Executa a instalação e a manutenção de equipamentos e sistemas eletrônicos e de automação. Realiza medições e testes com equipamentos eletrônicos. Executa procedimentos de controle de qualidade e gestão da produção de equipamentos eletrônicos dentre outras atuações essenciais do mercado."
+                    },
+                    {
+                        pontos: pontosUsuarios.Pontos_Administracao,
+                        imagem: "../html/logos/admin.jpeg",
+                        nome: "ADMINISTRAÇÃO",
+                        descricao: "Administrar, planejar, organizar e controlar as atividades empresariais, a fim de compreender a análise da produtividade, rentabilidade e controle de resultados. Esses são alguns dos objetivos do curso de Técnico em Administração de Empresas, nos quais o aluno busca motivação para o estudo da administração pública e privada de pequenas, médias e grandes empresas e de toda a complexa realidade que as envolve."
+                    },
+                    {
+                        pontos: pontosUsuarios.Pontos_Analises_Clinicas,
+                        imagem: "../html/logos/analises.jpeg",
+                        nome: "ANÁLISES CLÍNICAS",
+                        descricao: " O Curso Técnico em Análises Clínicas foi implantado para atender às necessidades na área das investigações médicas e biológicas. Prepara profissionais de nível médio com formação específica em Análises Clínicas, orientados e treinados para ocuparem postos em laboratórios, além de trabalharem no desenvolvimento de pesquisas acadêmicas."
+                    },
+                    {
+                        pontos: pontosUsuarios.Pontos_Quimica,
+                        imagem: "../html/logos/quimica.jpeg",
+                        nome: "QUÍMICA",
+                        descricao: "Desenvolver competências para analisar, pesquisar e produzir materiais e processos químicos nos setores de alimentos, farmácia, cosméticos, petroquímicos e de controle ambiental. Sempre ampliando os limites do conhecimento teórico e científico dos nossos alunos para atender à demanda por bens e serviços mais adequados ao homem e ao meio ambiente."
+                    },
+                    {
+                        pontos: pontosUsuarios.Pontos_Publicidade,
+                        imagem: "../html/logos/publicidade.jpeg",
+                        nome: "PUBLICIDADE",
+                        descricao: " O Curso Técnico em Publicidade busca integrar esforços coletivos para tornar o aluno apto a desenvolver a criatividade, o espírito inventivo, sua própria concepção em relação a produtos e serviços. O domínio do processo de produção através da criação e do marketing, a pesquisa de mercado, mídias e a produção gráfica audiovisual são os principais focos dos nossos alunos."
+                    }
+                ];
+
+                cursos.forEach((curso, index) => {
+                    if (curso.pontos > 0) {
+                        const carouselItem = document.createElement("div");
+                        carouselItem.classList.add("carousel-item");
+                        if (!activeSet) {
+                            carouselItem.classList.add("active");
+                            activeSet = true;
+                        }
+
+                        carouselItem.innerHTML = `
+                            <div class="imagem text-center">
+                                <img src="${curso.imagem}" width="120" height="120" alt="${curso.nome}">
+                            </div>
+                            <div class="text-center fw-bold">${curso.nome}</div>
+                            <p>${curso.descricao}</p>
+                        `;
+
+                        carouselContent.appendChild(carouselItem);
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>
