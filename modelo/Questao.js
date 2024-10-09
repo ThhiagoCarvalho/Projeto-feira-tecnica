@@ -14,33 +14,33 @@ module.exports = class Questoes {
         this._Pontos_Analises = null;
     }
 
-    // Método para obter a questão
-    async getQuestao() { 
+    // M�todo para obter a quest�o
+    async getQuestao() {
         const conexao = Banco.getConexao();
-        const sql = "SELECT Questao FROM Questoes_Cursos WHERE Posicao = ? AND ID_Curso_Ref = ?;";
-        try { 
+        const sql = "SELECT Questao FROM questoes_cursos WHERE Posicao = ? AND ID_Curso_Ref = ?;";
+        try {
             let result;
             [result] = await conexao.promise().execute(sql, [this._Botao_Valor, this._ID_Curso]);
             if (result.length > 0) {
                 return result[0].Questao;
             } else {
-                console.log("Questão não encontrada");
+                console.log("Quest�o n�o encontrada");
                 return null;
             }
         } catch (error) {
-            console.log("Erro ao buscar a questão:", error);
-            return false;
+            console.error("Erro ao buscar a quest�o:", error.message);
+            return null; // Retorne null para indicar que ocorreu um erro
         }
     }
 
-    // Método para obter as respostas
-    async getRespostas() { 
+    // M�todo para obter as respostas
+    async getRespostas() {
         const conexao = Banco.getConexao();
-        const sql = "SELECT Resposta FROM Respostas_Questoes WHERE ID_Questao_Ref = ?;";
-        try { 
+        const sql = "SELECT Resposta FROM respostas_questoes WHERE ID_Questao_Ref = ?;";
+        try {
             let IdQuestao = await this.getIdQuestao();
             if (!IdQuestao) {
-                console.log("ID da questão não encontrado");
+                console.log("ID da quest�o n�o encontrado");
                 return null;
             }
 
@@ -48,45 +48,42 @@ module.exports = class Questoes {
             if (result.length > 0) {
                 return result;
             } else {
-                console.log("Respostas não encontradas");
+                console.log("Respostas n�o encontradas");
                 return null;
             }
         } catch (error) {
-            console.log("Erro ao buscar respostas:", error);
-            return false;
+            console.error("Erro ao buscar respostas:", error.message);
+            return null; // Retorne null para indicar que ocorreu um erro
         }
     }
 
-    // Método para obter o ID da questão
-    async getIdQuestao() { 
+    // M�todo para obter o ID da quest�o
+    async getIdQuestao() {
         const conexao = Banco.getConexao();
-        const sql = "SELECT ID_Questao FROM Questoes_Cursos WHERE Posicao = ? AND ID_Curso_Ref = ?;";
-        try { 
-            let result;   
+        const sql = "SELECT ID_Questao FROM questoes_cursos WHERE Posicao = ? AND ID_Curso_Ref = ?;";
+        try {
+            let result;
             [result] = await conexao.promise().execute(sql, [this._Botao_Valor, this._ID_Curso]);
             if (result.length > 0) {
                 return result[0].ID_Questao;
             } else {
-                console.log("ID da questão não encontrado");
+                console.log("ID da quest�o n�o encontrado");
                 return null;
             }
         } catch (error) {
-            console.log("Erro ao buscar o ID da questão:", error);
-            return false;
+            console.error("Erro ao buscar o ID da quest�o:", error.message);
+            return null; // Retorne null para indicar que ocorreu um erro
         }
     }
 
-    
-    
-
-    // Método para obter o valor da resposta do usuário
-    async getValorResposta() { 
+    // M�todo para obter o valor da resposta do usu�rio
+    async getValorResposta() {
         const conexao = Banco.getConexao();
-        const sql = "SELECT Valor FROM Respostas_Questoes WHERE ID_Questao_Ref = ? AND Resposta = ?;";
-        try { 
+        const sql = "SELECT Valor FROM respostas_questoes WHERE ID_Questao_Ref = ? AND Resposta = ?;";
+        try {
             let IdQuestao = await this.getIdQuestao();
             if (!IdQuestao) {
-                console.log("ID da questão não encontrado");
+                console.log("ID da quest�o n�o encontrado");
                 return null;
             }
 
@@ -94,29 +91,30 @@ module.exports = class Questoes {
             if (result.length > 0) {
                 return result[0].Valor;
             } else {
-                console.log("Valor da resposta não encontrado");
+                console.log("Valor da resposta n�o encontrado");
                 return null;
             }
         } catch (error) {
-            console.log("Erro ao buscar valor da resposta:", error);
-            return false;
+            console.error("Erro ao buscar valor da resposta:", error.message);
+            return null; // Retorne null para indicar que ocorreu um erro
         }
     }
+
     async getCalcularCurso() {
         const conexao = Banco.getConexao();
-        const sql = "SELECT ID_Curso FROM Cursos WHERE Nome_Curso = ?;";
+        const sql = "SELECT ID_Curso FROM cursos WHERE Nome_Curso = ?;";
         try {
             const pontos = {
-                Informática: this._Pontos_Informatica,
-                Eletrônica: this._Pontos_Eletronica,
+                Informatica: this._Pontos_Informatica,
+                Eletronica: this._Pontos_Eletronica,
                 Publicidade: this._Pontos_Publicidade,
-                Administração: this._Pontos_Administracao,
-                Química: this._Pontos_Quimica,
-                Análises: this._Pontos_Analises
+                Administracao: this._Pontos_Administracao,
+                Quimica: this._Pontos_Quimica,
+                Analises: this._Pontos_Analises
             };
-    
+
             const cursosSelecionados = [];
-            
+
             for (const curso in pontos) {
                 if (pontos[curso] > 0) {
                     const [result] = await conexao.promise().execute(sql, [curso]);
@@ -125,15 +123,15 @@ module.exports = class Questoes {
                     }
                 }
             }
-    
-            return cursosSelecionados; 
+
+            return cursosSelecionados;
         } catch (error) {
-            console.log("Erro >>>", error);
-            return false;
+            console.error("Erro ao calcular curso:", error.message);
+            return null; // Retorne null para indicar que ocorreu um erro
         }
     }
-    
-    // Getter e Setter para _ID_Curso
+
+    // Getters e Setters
     get ID_Curso() {
         return this._ID_Curso;
     }
@@ -142,7 +140,6 @@ module.exports = class Questoes {
         this._ID_Curso = value;
     }
 
-    // Getter e Setter para _Botao_Valor
     get Botao_Valor() {
         return this._Botao_Valor;
     }
@@ -151,7 +148,6 @@ module.exports = class Questoes {
         this._Botao_Valor = value;
     }
 
-    // Getter e Setter para _Resposta_Usuario
     get Resposta_Usuario() {
         return this._Resposta_Usuario;
     }
@@ -160,7 +156,6 @@ module.exports = class Questoes {
         this._Resposta_Usuario = value;
     }
 
-    // Getter e Setter para _Respostas_idUsuario
     get Respostas_idUsuario() {
         return this._Respostas_idUsuario;
     }
@@ -169,7 +164,6 @@ module.exports = class Questoes {
         this._Respostas_idUsuario = value;
     }
 
-    // Getter e Setter para os pontos das áreas
     get Pontos_Informatica() {
         return this._Pontos_Informatica;
     }

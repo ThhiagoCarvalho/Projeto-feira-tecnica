@@ -3,7 +3,7 @@ const mysql = require('mysql2');
 class Banco {
     static HOST = 'localhost';
     static USER = 'root';
-    static PWD = 'root123';
+    static PWD = '@123456';
     static DB = 'feira_tecnica';
     static PORT = 3306;
     static CONEXAO = null;

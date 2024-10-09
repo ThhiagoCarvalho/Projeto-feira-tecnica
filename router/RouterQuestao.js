@@ -1,5 +1,5 @@
 const express = require('express');
-const ControleQuestao= require("../controle/controle_questao")
+const ControleQuestao= require("../controle/controlQuestao")
 
 module.exports = class RouterQuiz {
 
@@ -13,7 +13,7 @@ module.exports = class RouterQuiz {
 
     o controle questao pode ser 2 em 1 !!!!
     */
-    criarRotasQuiz  () {
+    criarRotasQuestao  () {
 
 
         this._router.get ('/:posicao/:idCursoRef' ,

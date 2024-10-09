@@ -20,11 +20,12 @@
     </div>
 
     <!-- Seção do Gráfico -->
-    <div id="chartdiv"></div>
+    <div id="chartdiv" class="d-flex justify-content-center"></div>
     <style> 
         #chartdiv {
-            width: 120%;
-            height: 500px;
+            width: 95%; /* Ajuste a largura */
+            height: 950px; /* Altura do gráfico */
+            margin-left: 6%; /* Move o gráfico para a direita */
         }
     </style>
 
@@ -57,43 +58,48 @@
     <script>
        const emailUsuario = localStorage.getItem("emailUsuario");
        let pontosUsuarios = null;
-       
-        function processarPontos  () { 
-            const rota = `/respostas `
+       console.log("Email ------>", emailUsuario);
 
-            fetch(rota, {
+       function processarPontos() {
+            const rota = `/respostas/buscar`;
+
+            return fetch(rota, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(emailUsuario) // envia o objeto com os pontos e o email
+                body: JSON.stringify({ Respostas_idUsuario: emailUsuario }) // Enviar como objeto JSON
             }).then((response) => {
                 return response.json();
             }).then((data) => {
-                if (response.status == true) {
-                    pontosUsuarios = data.dados
+                console.log("Dados retornados do servidor:", data); // Log dos dados retornados
+                if (data.status == true) {  // Verifique o 'data.status', não 'response.status'
+                    pontosUsuarios = data.dados;
+                    console.log("Pontos do usuário:", pontosUsuarios); // Log dos pontos do usuário
                 } else {
                     console.error("Erro ao buscar os pontos do banco");
                 }
             }).catch((error) => {
                 console.log("Error ao buscar categorias:", error);
             });
-                 
         }
-        document.addEventListener('DOMContentLoaded', async function () {
-           
 
+        document.addEventListener('DOMContentLoaded', async function () {
             if (emailUsuario) {
                 try {
-                    processarPontos ()
+                    await processarPontos(); // Aguarde a conclusão da função
                 } catch (error) {
                     console.error("Erro na requisição fetch:", error);
                 }
             } else {
                 pontosUsuarios = JSON.parse(localStorage.getItem("pontos"));
+                console.log("Pontos recuperados do localStorage:", pontosUsuarios); // Log dos pontos do localStorage
             }
 
+            // Verificar se pontosUsuarios está preenchido
             if (pontosUsuarios) {
+                console.log("Pontos do usuário para gráfico:", pontosUsuarios); // Log para verificação
+
                 var root = am5.Root.new("chartdiv");
 
                 root.setThemes([
@@ -111,26 +117,41 @@
 
                 var data = [];
 
+                // Logs para verificar cada categoria
                 if (pontosUsuarios.Pontos_Eletronica > 0) {
+                    console.log("Pontos em Eletrônica:", pontosUsuarios.Pontos_Eletronica);
                     data.push({ value: pontosUsuarios.Pontos_Eletronica, category: "Eletrônica" });
                 }
                 if (pontosUsuarios.Pontos_Informatica > 0) {
+                    console.log("Pontos em Informática:", pontosUsuarios.Pontos_Informatica);
                     data.push({ value: pontosUsuarios.Pontos_Informatica, category: "Informática" });
                 }
-                if (pontosUsuarios.Pontos_Analises_Clinicas > 0) {
-                    data.push({ value: pontosUsuarios.Pontos_Analises_Clinicas, category: "Análises Clínicas" });
+                if (pontosUsuarios.Pontos_Analises > 0) { // Corrigido aqui para 'Pontos_Analises'
+                    console.log("Pontos em Análises Clínicas:", pontosUsuarios.Pontos_Analises);
+                    data.push({ value: pontosUsuarios.Pontos_Analises, category: "Análises Clínicas" });
                 }
                 if (pontosUsuarios.Pontos_Quimica > 0) {
+                    console.log("Pontos em Química:", pontosUsuarios.Pontos_Quimica);
                     data.push({ value: pontosUsuarios.Pontos_Quimica, category: "Química" });
                 }
                 if (pontosUsuarios.Pontos_Publicidade > 0) {
+                    console.log("Pontos em Publicidade:", pontosUsuarios.Pontos_Publicidade);
                     data.push({ value: pontosUsuarios.Pontos_Publicidade, category: "Publicidade" });
                 }
                 if (pontosUsuarios.Pontos_Administracao > 0) {
+                    console.log("Pontos em Administração:", pontosUsuarios.Pontos_Administracao);
+                    console.log("Categoria:", "Administração");
                     data.push({ value: pontosUsuarios.Pontos_Administracao, category: "Administração" });
+
                 }
 
                 series.data.setAll(data);
+                console.log("Dados para o gráfico:", data); // Log dos dados a serem usados no gráfico
+
+                // Aumentar o tamanho das legendas
+                series.labels.template.setAll({
+                    fontSize: 25, // Aumenta o tamanho das legendas
+                });
 
                 // Montagem do carousel com base nos pontos
                 const carouselContent = document.getElementById("carouselContent");
@@ -156,27 +177,28 @@
                         descricao: "Administrar, planejar, organizar e controlar as atividades empresariais, a fim de compreender a análise da produtividade, rentabilidade e controle de resultados. Esses são alguns dos objetivos do curso de Técnico em Administração de Empresas, nos quais o aluno busca motivação para o estudo da administração pública e privada de pequenas, médias e grandes empresas e de toda a complexa realidade que as envolve."
                     },
                     {
-                        pontos: pontosUsuarios.Pontos_Analises_Clinicas,
+                        pontos: pontosUsuarios.Pontos_Analises,
                         imagem: "../html/logos/analises.jpeg",
                         nome: "ANÁLISES CLÍNICAS",
-                        descricao: " O Curso Técnico em Análises Clínicas foi implantado para atender às necessidades na área das investigações médicas e biológicas. Prepara profissionais de nível médio com formação específica em Análises Clínicas, orientados e treinados para ocuparem postos em laboratórios, além de trabalharem no desenvolvimento de pesquisas acadêmicas."
+                        descricao: " O Curso Técnico em Análises Clínicas foi implantado para atender às necessidades na área das investigações médicas e biológicas. Prepara profissionais de nível médio para atuar em laboratórios de análises clínicas e/ou análises químicas, com competência técnica para desenvolver as atividades em laboratório de análises clínicas, de acordo com normas e procedimentos específicos."
                     },
                     {
                         pontos: pontosUsuarios.Pontos_Quimica,
                         imagem: "../html/logos/quimica.jpeg",
                         nome: "QUÍMICA",
-                        descricao: "Desenvolver competências para analisar, pesquisar e produzir materiais e processos químicos nos setores de alimentos, farmácia, cosméticos, petroquímicos e de controle ambiental. Sempre ampliando os limites do conhecimento teórico e científico dos nossos alunos para atender à demanda por bens e serviços mais adequados ao homem e ao meio ambiente."
+                        descricao: "Desenvolver competências para analisar, pesquisar e produzir materiais e processos químicos, utilizando tecnologias avançadas para transformar a matéria-prima em produtos químicos e correlatos. Oferecer formação profissional adequada que permita a atuação em indústrias químicas, farmacêuticas, petroquímicas, de alimentos e bebidas, entre outras áreas."
                     },
                     {
                         pontos: pontosUsuarios.Pontos_Publicidade,
                         imagem: "../html/logos/publicidade.jpeg",
                         nome: "PUBLICIDADE",
-                        descricao: " O Curso Técnico em Publicidade busca integrar esforços coletivos para tornar o aluno apto a desenvolver a criatividade, o espírito inventivo, sua própria concepção em relação a produtos e serviços. O domínio do processo de produção através da criação e do marketing, a pesquisa de mercado, mídias e a produção gráfica audiovisual são os principais focos dos nossos alunos."
+                        descricao: "O Curso Técnico em Publicidade busca integrar esforços coletivos para tornar o aluno apto a desenvolver a criatividade e o planejamento necessário para a execução de campanhas publicitárias e eventos. Proporcionar uma formação profissional que atenda às necessidades do mercado publicitário, capacitando o aluno a compreender as diversas formas de comunicação e seu papel na sociedade."
                     }
                 ];
 
                 cursos.forEach((curso, index) => {
                     if (curso.pontos > 0) {
+                        console.log(`Adicionando curso: ${curso.nome} com ${curso.pontos} pontos`); // Log do curso
                         const carouselItem = document.createElement("div");
                         carouselItem.classList.add("carousel-item");
                         if (!activeSet) {
@@ -195,6 +217,8 @@
                         carouselContent.appendChild(carouselItem);
                     }
                 });
+            } else {
+                console.warn("Nenhum ponto de usuário encontrado."); // Log se não há pontos
             }
         });
     </script>

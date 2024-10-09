@@ -2,13 +2,13 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1366px, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=0.3">
     <link rel="stylesheet" type="text/css" href="../css/paginaLogada.css" media="screen" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 
-    <title>Pagina Logada</title>
+    <title>Pagina incial</title>
 </head>
 <body>
     <div class="box">
@@ -21,7 +21,7 @@
         <div class="ou">ou</div>
         <button class="botaovazioquad" type="button" id = "btn-resultados">VER SEU ÚLTIMO RESULTADO</button>
     
-        <a href="" class="sair">SAIR </a> 
+        <a href="../html/paginaInicial.html" class="sair">SAIR </a> 
 
         <div class="caixabaixa">
 
@@ -37,13 +37,13 @@
     const btnResultados = document.getElementById("btn-resultados")
 
     bntRefazerQuiz.onclick = function () {
-        window.location = 'quiz.html'
+        window.location = "../html/quiz.html"
 
     }
 
 
     btnResultados.onclick = function () {
-        window.location = 'resultados.html'
+        window.location = "../html/historicoUsuario.html";
 
     }
 </script>

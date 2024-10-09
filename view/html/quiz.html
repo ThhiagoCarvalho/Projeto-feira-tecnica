@@ -8,17 +8,18 @@
 </head>
 <body>
     <div class="faixa"> 
-        <button class="btn-voltar" id= "btnVoltar" type="button">< </button>
+        <button class="btn-voltar" id="btnVoltar" type="button">< </button>
     </div>
 
     <div class="questao" id="caixaPergunta">
         <p></p>
     </div>
 
-    <div class="respostas-container" >
-        <div class="respostas">
-        </div>
+    <div class="respostas-container">
+        <div class="respostas"></div>
     </div>
+
+    <div class="faixa-fixa"></div> <!-- Faixa fixa no final da página -->
 
     <script>
         const btnVoltar = document.getElementById("btnVoltar");
@@ -29,8 +30,8 @@
         let vetorCursos = [];
         let repeticaoCursoNovos = 0;
         let VetorPosicao = 0;
-        const emailUsuario = localStorage.getItem ("emailUsuario")
-        console.log("email usuario ----->",emailUsuario);
+        const emailUsuario = localStorage.getItem("emailUsuario"); // Captura o email do usuário
+        console.log("Email do usuário ----->", emailUsuario); // Exibe o email capturado
 
         const pontosUsuario = {
             Pontos_Informatica: 0,
@@ -41,7 +42,7 @@
             Pontos_Analises_Clinicas: 0 
         };
 
-        let currentQuestion = 1; // VariÃ¡vel para a pergunta atual
+        let currentQuestion = 1; // Variável para a pergunta atual
         const totalQuestions = 9;
 
         btnVoltar.onclick = function () { 
@@ -61,8 +62,7 @@
         }
 
         async function carregarPergunta() {
-            // Atualiza o curso referenciado antes da quarta pergunta
-            if (currentQuestion === 4 && vetorCursos.length === 0) { // SÃ³ faz isso na quarta questÃ£o se ainda nÃ£o tem cursos carregados
+            if (currentQuestion === 4 && vetorCursos.length === 0) {
                 try {
                     let uri_get_curso = `/questao/perguntas/curso/`;
                     const cursoResponse = await fetch(uri_get_curso, {
@@ -77,18 +77,17 @@
                     if (cursoData.dados && Array.isArray(cursoData.dados)) {
                         vetorCursos = embaralharArray(cursoData.dados);
                         console.log("Cursos embaralhados:", vetorCursos);
-                        
                     } else {
                         console.error("Erro ao processar cursoData:", cursoData);
                     }
                 } catch (error) {
                     console.error("Erro ao enviar pontos:", error);
-                    return; // Evita continuar sem os cursos atualizados
+                    return;
                 }
             }
-            if (vetorCursos.length > 0) { // Alterada a condiÃ§Ã£o para verificar se vetorCursos nÃ£o estÃ¡ vazio
+            if (vetorCursos.length > 0) {
                 cursoReferenciado = vetorCursos[VetorPosicao];
-                if ((vetorCursos.length === 2 && currentQuestion === 6) || (vetorCursos.length === 3 && (currentQuestion === 5 || currentQuestion === 7))) { // CondiÃ§Ãµes consolidadas
+                if ((vetorCursos.length === 2 && currentQuestion === 6) || (vetorCursos.length === 3 && (currentQuestion === 5 || currentQuestion === 7))) {
                     VetorPosicao++;
                 }
             }
@@ -107,7 +106,7 @@
                 const questaoData = await questaoResponse.json();
                 const respostaData = await respostaResponse.json();
 
-                console.log("Dados da questÃ£o:", questaoData);
+                console.log("Dados da questão:", questaoData);
 
                 processarPerguntas(questaoData);
 
@@ -116,7 +115,7 @@
                     processarRespostas(respostaData.dados);
                     adicionarEventosDeClique();
                 } else {
-                    console.error("Erro: respostas nÃ£o Ã© um array:", respostaData);
+                    console.error("Erro: respostas não é um array:", respostaData);
                 }
             } catch (error) {
                 console.error("Erro ao carregar pergunta/respostas:", error);
@@ -130,7 +129,6 @@
 
         function processarRespostas(respostas) {
             respostasDiv.innerHTML = ''; 
-            
             if (Array.isArray(respostas)) {
                 respostas.forEach((respostaObj, index) => {
                     const botaoResposta = document.createElement("button");
@@ -140,7 +138,7 @@
                     respostasDiv.appendChild(botaoResposta);
                 });
             } else {
-                console.error("Erro: respostas nÃ£o Ã© um array:", respostas);
+                console.error("Erro: respostas não é um array:", respostas);
             }
         }
 
@@ -150,8 +148,8 @@
             botoesRespostas.forEach((botao, index) => {
                 botao.addEventListener('click', async function () {
                     let conteudoResposta = botao.textContent;
-                    console.log("pergunta:", conteudoResposta);
-                    let uri_get_pontoResposta = /questao/respostas/${currentQuestion}/${cursoReferenciado}/${encodeURIComponent(conteudoResposta)};
+                    console.log("Resposta selecionada:", conteudoResposta);
+                    let uri_get_pontoResposta = `/questao/respostas/${currentQuestion}/${cursoReferenciado}/${encodeURIComponent(conteudoResposta)}`;
                     try {
                         const respostaPonto = await fetch(uri_get_pontoResposta);
                         const dadosPonto = await respostaPonto.json();
@@ -165,7 +163,7 @@
                         if (currentQuestion > totalQuestions) {
                             finalizarQuiz();
                         } else {
-                            await carregarPergunta(); // Chamando a funÃ§Ã£o sem parÃ¢metros
+                            await carregarPergunta(); 
                         }
                     } catch (error) {
                         console.error("Erro ao processar a resposta:", error);
@@ -177,54 +175,56 @@
         function salvarPontos(resposta) {
             console.log("Pontos recebidos:", resposta);
 
-            // VerificaÃ§Ã£o se a chave de pontos Ã© vÃ¡lida
-            if (pontosUsuario.hasOwnProperty(resposta.dados)) { // Alterado para usar 'dados'
-                pontosUsuario[resposta.dados] += 1; // Alterado para 'dados'
+            if (pontosUsuario.hasOwnProperty(resposta.dados)) {
+                pontosUsuario[resposta.dados] += 1; 
             } else {
-                console.error("Chave de pontos invÃ¡lida:", resposta.dados); // Alterado para 'dados'
+                console.error("Chave de pontos inválida:", resposta.dados); 
             }
 
             console.log("Pontos atualizados:", pontosUsuario);
         }
 
-       function finalizarQuiz() {
-          if (emailUsuario) {
-              let rota = "/respostas";
-      
-              // Adiciona o email ao objeto pontosUsuario
-              const dadosEnvio = {
-                pontosUsuario, // Envia o vetor com os pontos
-                Respostas_idUsuario: emailUsuario // Envia o e-mail do usuÃ¡rio
-            };
-      
-              fetch(rota, {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify(dadosEnvio) // envia o objeto com os pontos e o email
-              })
-              .then(response => {
-                  const contentType = response.headers.get("content-type");
-                  if (contentType && contentType.includes("application/json")) {
-                      return response.json();
-                  } else {
-                      throw new Error("Resposta nÃ£o Ã© JSON");
-                  }
-              })
-              .then(data => {
-                  window.location.href = "../html/historicoUsuario.html";
-              })
-              .catch(error => console.error("Erro ao finalizar o quiz:", error));
-          } else {
-              localStorage.setItem("pontos", JSON.stringify(pontosUsuario));
-              window.location.href = "../html/historicoUsuario.html";
-          }
-      }
+        function finalizarQuiz() {
+            if (emailUsuario) {
+                let rota = `/respostas`;
+        
+                console.log("Iniciando envio de dados...");
+                const dadosEnvio = {
+                    ...pontosUsuario,
+                    Respostas_idUsuario: emailUsuario // Adiciona o email ao objeto
+                };
 
+                console.log("Dados a serem enviados:", JSON.stringify(dadosEnvio)); // Exibe os dados que estão sendo enviados
 
+                fetch(rota, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dadosEnvio) 
+                })
+                .then(response => {
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.includes("application/json")) {
+                        console.log("Resposta é JSON");
+                        return response.json();
+                    } else {
+                        console.log("Resposta não é JSON");
+                        throw new Error("Resposta não é JSON");
+                    }
+                })
+                .then(data => {
+                    console.log("Resposta do servidor:", data);
+                    window.location.href = "../html/historicoUsuario.html"; // Redireciona após a resposta
+                })
+                .catch(error => console.error("Erro ao finalizar o quiz:", error));
+            } else {
+                localStorage.setItem("pontos", JSON.stringify(pontosUsuario));
+                window.location.href = "../html/historicoUsuario.html"; 
+            }
+        }
 
-        window.onload = iniciarQuiz;
+        window.onload = iniciarQuiz; // Inicia o quiz quando a página é carregada
     </script>
 </body>
 </html>

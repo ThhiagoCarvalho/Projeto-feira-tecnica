@@ -9,7 +9,7 @@ module.exports = class RouterResposta {
 
     criarRotasResposta() {
         this._router.post('/', this._controleResposta.controle_resposta_post); // Alterado para ':email'
-        this._router.get('/', this._controleResposta.controle_buscarHistorico);
+        this._router.post('/buscar', this._controleResposta.controle_buscarHistorico);
         return this._router;
     }
 }

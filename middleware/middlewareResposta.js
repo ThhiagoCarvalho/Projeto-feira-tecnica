@@ -4,7 +4,7 @@ const MeuTokenJWT = require("../modelo/MeuTokenJWT")
 module.exports = class MiddlewareResposta {
 
     async controle_resposta_autenticacao (request , response , next) {
-        const token = request.headers.Authorization
+        const token = request.headers.authorization
         const objToken = new MeuTokenJWT()
         try {
             const tokenValido = await objToken.validarToken(token);  

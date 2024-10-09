@@ -3,7 +3,10 @@
     padding: 0;
     background: #F1F1F1;
     box-sizing: border-box;
+}
 
+html, body {
+    height: 100%; /* Garantir que a altura do body seja 100% */
 }
 
 .btn-voltar { 
@@ -14,43 +17,35 @@
     width: 128px;
     height: 123px;
     background: #D9D9D9;
-    border: none
+    border: none;
 }
 
-
 .faixa {
-    width: 1366px;
+    width: 100%; /* Manter a largura como 100% */
     height: 168px;
-    background: var(--TOQUECOR, #3F7856);    
+    background: var(--TOQUECOR, #3F7856);
 }
 
 h2 {
     color: var(--TOQUECOR, #3F7856);
-    /* TITULO PRINCIPAL */
     font-family: "Fjalla One", system-ui;
     text-align: center;
     font-size: 128px;
     font-weight: 400;
-    margin: 114px auto 100px auto
+    margin: 114px auto 100px auto;
 }
 
 p { 
     color: #000;
     text-align: center;
-    /* TEXTOS BASICOS */
     font-family: "Inter", system-ui;
     font-size: 50px;
     font-weight: 400;
-
-
 }
 
 .introducao { 
     margin: 150px auto 170px auto;
-   
-
 }
-
 
 .btn-voltar { 
     border-radius: 86px;
@@ -61,10 +56,8 @@ p {
     width: 128px;
     height: 123px;
     background: #D9D9D9;
-    border: none
+    border: none;
 }
-
-
 
 /* Estilo geral do card */
 .card {
@@ -77,66 +70,62 @@ p {
 /* Estilo para a imagem de perfil */
 .profile-img img {
     border-radius: 50%;
-    width: 240px;  /* ajuste o tamanho conforme necess√°rio */
-    height: 240px; /* ajuste o tamanho conforme necess√°rio */
-    object-fit: cover; /* para manter a propor√ß√£o da imagem */
+    width: 240px;  /* ajuste o tamanho conforme necess·rio */
+    height: 240px; /* ajuste o tamanho conforme necess·rio */
+    object-fit: cover; /* para manter a proporÁ„o da imagem */
 }
 
-/* Estilo para o conte√∫do de texto */
+/* Estilo para o conte˙do de texto */
 .info {
     align-self: flex-end;
     margin-left: 15px;
 }
+
 .container-esquerdo {
     margin: 0 0 30px 40px; /* Margem esquerda e inferior */
     width: 1055px;
     height: 306px;
 }
 
-
 .container-direito {
-    align-self: flex-end; /* Alinha este container √† direita */
+    align-self: flex-end; /* Alinha este container ‡ direita */
     margin: 0 40px 30px 0; /* Ajusta a margem direita */
     width: 1055px;
     height: 306px;
 }
 
-
 .card-container {
     width: 100%; /* Preenche toda a largura do pai */
     display: flex; /* Para usar flexbox */
     flex-direction: column; /* Colocar os itens em coluna */
-    align-items: flex-start; /* Alinhar os itens √† esquerda */
+    align-items: flex-start; /* Alinhar os itens ‡ esquerda */
 }
+
 /* Nome */
 .nomepessoa {
-    color: #3F7856; /* ajuste a cor conforme necess√°rio */
+    color: #3F7856; /* ajuste a cor conforme necess·rio */
     margin: 0;
     font-family: "Fjalla One", system-ui;
     font-size: 38px;
     font-weight: 600;
 }
 
-/* Texto de descri√ß√£o */
+/* Texto de descriÁ„o */
 .info p {
     margin: 5px 0;
     text-align: justify;
     font-family: "Inter", system-ui;
-
-
     color: #000;
-
     font-size: 40px;
     font-weight: 400;
     line-height: 48px; /* 120% */
 }
 
-/* Link para o curr√≠culo */
+/* Link para o currÌculo */
 .info a {
-    color: #3F7856; /* ajuste a cor conforme necess√°rio */
+    color: #3F7856; /* ajuste a cor conforme necess·rio */
     text-decoration: none;
     font-family: "Inter", system-ui;
-
     font-size: 38px;
     font-weight: 600;
 }
@@ -146,49 +135,20 @@ p {
     text-decoration: none;
 }
 
-
-
-.container-direito .nomepessoa  {
+.container-direito .nomepessoa {
     text-align: right;
 }
 
+.fim {
+    position: fixed; /* Fixa a faixa na parte inferior */
+    bottom: 0; /* Posiciona a faixa na parte inferior da p·gina */
+    width: 100%; /* Largura 100% para ocupar toda a largura */
+    height: 168px; /* Altura desejada */
+    background: var(--TOQUECOR, #3F7856);  
+}
 
-
-
-.container-direito .info  {
+.container-direito .info {
     direction: rtl;
-
     text-align: right;
-    word-wrap:break-word;
-
-}
-
-.introducao p {
-    color: #3F7856; /* ajuste a cor conforme necess√°rio */
-    margin: 0;
-    font-family: "Inter", system-ui;
-    font-size: 38px;
-    font-weight: 400;
-
-
-}
-
-p { 
-    color: #000;
-
-    text-align: center;
-    /* TEXTOS BASICOS */
-    font-family: "Inter", system-ui;
-    font-size: 38px;
-    font-weight: 400;
-    padding: 70px;
-}
-
-
-.descricao { 
-    text-align: center;
-}
-
-.fim  {
-    margin-top: 140px;
+    word-wrap: break-word;
 }

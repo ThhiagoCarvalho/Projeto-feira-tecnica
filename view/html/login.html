@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1366px, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=0.3">
     <link rel="stylesheet" type="text/css" href="../css/login.css" media="screen" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,7 +29,7 @@
 
         <div class="possui-conta">
             <p> Ainda não possui conta? </p>
-            <a href="cadastro.html" class="login">CRIAR CONTA </a> 
+            <a href="../html/cadastro.html" class="login">CRIAR CONTA </a> 
         </div>
     </div>
 </body>
@@ -42,7 +42,7 @@
     const mensage_error = document.getElementById("error-message")
     const bntVoltar = document.getElementById("btnVoltar")
     bntVoltar.onclick = function ( ) { 
-        window.location = "paginaInicial.html"
+        window.location = "../html/paginaInicial.html"
     }
 
 
@@ -108,9 +108,9 @@
             } else {
                 emailUsuario.classList.remove("errorButton");
                 senhaUsuario.classList.remove("errorButton");
-
-                localStorage.setItem("dados",texto_json);
-                window.location.href= 'paginalogada.html'
+                
+                localStorage.setItem("emailUsuario", emailUsuario.value); // Armazena o email no localStorage
+                window.location.href= "../html/paginalogada.html";
             }   
         }  catch (error) {
         console.error("Erro ao processar o JSON:", error);

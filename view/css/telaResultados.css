@@ -200,25 +200,25 @@ button {
 /* Estilo para a imagem de perfil */
 .profile-img img {
     border-radius: 50%;
-    width: 245px;  /* ajuste o tamanho conforme necess√°rio */
-    height: 245px; /* ajuste o tamanho conforme necess√°rio */
-    object-fit: cover; /* para manter a propor√ß√£o da imagem */
+    width: 245px;  /* ajuste o tamanho conforme necess·rio */
+    height: 245px; /* ajuste o tamanho conforme necess·rio */
+    object-fit: cover; /* para manter a proporÁ„o da imagem */
 }
 
-/* Estilo para o conte√∫do de texto */
+/* Estilo para o conte˙do de texto */
 .info {
     margin-left: 15px;
 }
 
 /* Nome */
 .info h2 {
-    color: #3F7856; /* ajuste a cor conforme necess√°rio */
+    color: #3F7856; /* ajuste a cor conforme necess·rio */
     font-family: "Inter";
     font-size: 40px;
     font-weight: 600;
 }
 
-/* Texto de descri√ß√£o */
+/* Texto de descriÁ„o */
 .info p {
     font-size: 30px;
     color: black;
@@ -227,9 +227,9 @@ button {
     text-align: justify;
 }
 
-/* Link para o curr√≠culo */
+/* Link para o currÌculo */
 .info a {
-    color: #3F7856; /* ajuste a cor conforme necess√°rio */
+    color: #3F7856; /* ajuste a cor conforme necess·rio */
     text-decoration: none;
     font-family: "Inter";
     font-size: 38px;
