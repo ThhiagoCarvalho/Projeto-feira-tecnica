@@ -1,161 +1,274 @@
-CREATE DATABASE  IF NOT EXISTS `feira_tecnica` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `feira_tecnica`;
--- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
---
--- Host: 127.0.0.1    Database: feira_tecnica
--- ------------------------------------------------------
--- Server version	8.3.0
+create database BancoTecnico;
+use BancoTecnico;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE TABLE Usuarios (
+    idUsuario INT AUTO_INCREMENT PRIMARY KEY,
+    nomeUsuario VARCHAR(100) NOT NULL,
+    emailUsuario VARCHAR(100) UNIQUE NOT NULL,
+    senhaUsuario VARCHAR(100) NOT NULL
+);
+CREATE TABLE respostas_usuarios (
+    Respostas_idUsuario Varchar(100),
+    Data_Teste DATETIME,
+    Pontos_Informatica INT NOT NULL,
+    Pontos_Eletronica INT NOT NULL,
+    Pontos_Publicidade INT NOT NULL,
+    Pontos_Adminitracao INT NOT NULL,
+    Pontos_Quimica INT NOT NULL,
+    Pontos_Analises INT NOT NULL
+);
+CREATE TABLE Cursos (
+    ID_Curso INT AUTO_INCREMENT PRIMARY KEY,
+    Nome_Curso VARCHAR(100) NOT NULL
+);
+CREATE TABLE Questoes_Cursos (
+    ID_Questao INT AUTO_INCREMENT PRIMARY KEY,
+    ID_Curso_Ref INT,
+	Posicao INT NOT NULL,
+    Questao VARCHAR(100) NOT NULL,
+	FOREIGN KEY (ID_Curso_Ref) REFERENCES Cursos(ID_Curso) 
+);
+CREATE TABLE Respostas_Questoes (
+    ID_Questao_Ref INT NOT NULL,
+	Valor INT NOT NULL,
+    Resposta VARCHAR(100) NOT NULL,
+	FOREIGN KEY (ID_Questao_Ref) REFERENCES Questoes_Cursos(ID_Questao) 
+);
 
---
--- Table structure for table `cursos`
---
+INSERT INTO cursos (ID_Curso, Nome_Curso)
+VALUES
+(1, 'Informática'),
+(2, 'Eletrônica'),
+(3, 'Publicidade'),
+(4, 'Administração'),
+(5, 'Química'),
+(6, 'Análises'),
+(1000, 'Fixas');
 
-DROP TABLE IF EXISTS `cursos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `cursos` (
-  `ID_Curso` int NOT NULL AUTO_INCREMENT,
-  `Nome_Curso` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`ID_Curso`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `cursos`
---
+INSERT INTO questoes_cursos (ID_Curso_Ref, Posicao, Questao) VALUES
+-- Perguntas introdutórias (ID_Curso_Ref = 1000)
+(1000, 1, 'O que mais te chama atenção?'),
+(1000, 2, 'O que mais te chama atenção?'),
+(1000, 3, 'O que mais te chama atenção?'),
 
-LOCK TABLES `cursos` WRITE;
-/*!40000 ALTER TABLE `cursos` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cursos` ENABLE KEYS */;
-UNLOCK TABLES;
+-- ANÁLISES CLÍNICAS (ID_Curso_Ref = 6)
+(6, 4, 'Você sente alguma apreensão em relação a agulhas?'),
+(6, 5, 'Você se considera uma pessoa higiênica e organizada?'),
+(6, 6, 'Você consegue seguir normas à risca?'),
+(6, 7, 'Você consegue manter a concentração mesmo em momentos de crise?'),
+(6, 8, 'Você se sente desconfortável ao lidar com ferramentas clínicas?'),
+(6, 9, 'Você tem destreza ao realizar procedimentos manuais, garantindo precisão?'),
 
---
--- Table structure for table `questoes_cursos`
---
+-- PUBLICIDADE (ID_Curso_Ref = 3)
+(3, 4, 'Você se considera uma pessoa criativa?'),
+(3, 5, 'Você busca se manter atualizado sobre o que está acontecendo no mundo?'),
+(3, 6, 'Você se considera uma pessoa persuasiva?'),
+(3, 7, 'Você gosta de lidar com o público?'),
+(3, 8, 'Você se considera uma pessoa que se familiariza com diferentes canais de comunicação?'),
+(3, 9, 'Você se considera uma pessoa com senso crítico ao avaliar o público alvo de algo?'),
 
-DROP TABLE IF EXISTS `questoes_cursos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `questoes_cursos` (
-  `ID_Questao` int NOT NULL AUTO_INCREMENT,
-  `ID_Curso_Ref` int DEFAULT NULL,
-  `Posicao` int DEFAULT NULL,
-  `Questao` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`ID_Questao`),
-  KEY `ID_Curso_Ref` (`ID_Curso_Ref`),
-  CONSTRAINT `questoes_cursos_ibfk_1` FOREIGN KEY (`ID_Curso_Ref`) REFERENCES `cursos` (`ID_Curso`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- ADM (ID_Curso_Ref = 4)
+(4, 4, 'Você costuma valorizar organização e metodologia?'),
+(4, 5, 'Você se considera uma pessoa com um pensamento estratégico?'),
+(4, 6, 'Você normalmente costuma propor soluções a demandas que precisam ser resolvidas?'),
+(4, 7, 'Você se considera uma pessoa com habilidades interpessoais?'),
+(4, 8, 'Você se considera uma pessoa observadora e analítica?'),
+(4, 9, 'Você valoriza como prioridade o planejamento em projetos?'),
 
---
--- Dumping data for table `questoes_cursos`
---
+-- INFORMÁTICA (ID_Curso_Ref = 1)
+(1, 4, 'Você gosta de pensar sobre questões numéricas e resolução de problemas?'),
+(1, 5, 'Você tem interesse por aparelhos tecnológicos?'),
+(1, 6, 'Você se considera uma pessoa com um bom raciocínio lógico?'),
+(1, 7, 'Você normalmente tem interesse em acompanhar e se atualizar sobre as tendências tecnológicas?'),
+(1, 8, 'Você gosta de analisar e desenvolver funções?'),
+(1, 9, 'Você costuma buscar soluções inovadoras?'),
 
-LOCK TABLES `questoes_cursos` WRITE;
-/*!40000 ALTER TABLE `questoes_cursos` DISABLE KEYS */;
-/*!40000 ALTER TABLE `questoes_cursos` ENABLE KEYS */;
-UNLOCK TABLES;
+-- QUÍMICA (ID_Curso_Ref = 5)
+(5, 4, 'Você gosta de experimentos?'),
+(5, 5, 'Você se preocupa com o meio ambiente?'),
+(5, 6, 'Você gosta de realizar pesquisas?'),
+(5, 7, 'Você gosta de laboratórios?'),
+(5, 8, 'Você gosta de analisar composições?'),
+(5, 9, 'Você se vê trabalhando no ramo de indústrias farmacêuticas e cosméticos?'),
 
---
--- Table structure for table `respostas_questoes`
---
+-- ELETRÔNICA (ID_Curso_Ref = 2)
+(2, 4, 'Você se interessa pelo desenvolvimento de máquinas?'),
+(2, 5, 'Você se sente instigado em abrir ou mexer com hardwares?'),
+(2, 6, 'Você presume que otimizar sistemas é importante para a eficiência de aparelhos?'),
+(2, 7, 'Você acha que modernizar equipamentos tecnológicos garante maior eficácia nos resultados?'),
+(2, 8, 'Você se considera uma pessoa integrada com a manutenção de dispositivos?'),
+(2, 9, 'Você tem interesse na parte analógica da tecnologia?');
 
-DROP TABLE IF EXISTS `respostas_questoes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `respostas_questoes` (
-  `ID_Questao_Ref` int DEFAULT NULL,
-  `Valor` int DEFAULT NULL,
-  `Resposta` varchar(100) DEFAULT NULL,
-  KEY `ID_Questao_Ref` (`ID_Questao_Ref`),
-  CONSTRAINT `respostas_questoes_ibfk_1` FOREIGN KEY (`ID_Questao_Ref`) REFERENCES `questoes_cursos` (`ID_Questao`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `respostas_questoes`
---
+INSERT INTO respostas_questoes (ID_Questao_Ref, Valor, Resposta) VALUES
+-- Respostas para as 3 primeiras perguntas introdutórias (ID_Questao_Ref = 1, 2, 3)
 
-LOCK TABLES `respostas_questoes` WRITE;
-/*!40000 ALTER TABLE `respostas_questoes` DISABLE KEYS */;
-/*!40000 ALTER TABLE `respostas_questoes` ENABLE KEYS */;
-UNLOCK TABLES;
+-- Questão 1 (ID_Questao_Ref = 1)
+(1, 'Pontos_Administracao', 'empreender e aprender sobre empresas'),
+(1, 'Pontos_Informatica', 'desenvolver software'),
+(1, 'Pontos_Publicidade', 'comunicar e se envolver com público'),
+(1, 'Pontos_Quimica', 'realizar experiências'),
 
---
--- Table structure for table `respostas_usuarios`
---
+-- Questão 2 (ID_Questao_Ref = 2)
+(2, 'Pontos_Eletronica', 'criar novas tecnologias'),
+(2, 'Pontos_Analises_Clinicas', 'cuidar de pessoas/animais'),
+(2, 'Pontos_Administracao', 'analisar dados de vendas e organizar'),
+(2, 'Pontos_Informatica', 'desenvolver raciocínio lógico'),
 
-DROP TABLE IF EXISTS `respostas_usuarios`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `respostas_usuarios` (
-  `Respostas_idUsuario` int NOT NULL,
-  `Data_Teste` varchar(36) NOT NULL,
-  `Pontos_Informatica` int NOT NULL,
-  `Pontos_Eletronica` int NOT NULL,
-  `Pontos_Publicidade` int NOT NULL,
-  `Pontos_Administracao` int NOT NULL,
-  `Pontos_Quimica` int NOT NULL,
-  `Pontos_Analises` int NOT NULL,
-  KEY `Respostas_idUsuario` (`Respostas_idUsuario`),
-  CONSTRAINT `respostas_usuarios_ibfk_1` FOREIGN KEY (`Respostas_idUsuario`) REFERENCES `usuarios` (`idUsuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- Questão 3 (ID_Questao_Ref = 3)
+(3, 'Pontos_Publicidade', 'tirar fotos e fazer propagandas'),
+(3, 'Pontos_Quimica', 'analisar estruturas e fazer experimentos científicos'),
+(3, 'Pontos_Eletronica', 'desenvolvimento de sistemas e partes hardware'),
+(3, 'Pontos_Analises_Clinicas', 'interesse em medicina e cura de pessoas'),
 
---
--- Dumping data for table `respostas_usuarios`
---
+-- Respostas para as perguntas SIM ou NÃO de Análises Clínicas (ID_Curso_Ref = 6)
+-- Questão 4 (ID_Questao_Ref = 4)
+(4, 'Pontos_Analises_Clinicas', 'Sim'),
+(4, '0', 'Não'),
 
-LOCK TABLES `respostas_usuarios` WRITE;
-/*!40000 ALTER TABLE `respostas_usuarios` DISABLE KEYS */;
-INSERT INTO `respostas_usuarios` VALUES (1,'22/09/2024',80,54,23,43,5,0),(2,'22/09/2024',70,51,24,26,5,4),(1,'22/09/2024',70,51,24,26,54,40);
-/*!40000 ALTER TABLE `respostas_usuarios` ENABLE KEYS */;
-UNLOCK TABLES;
+-- Questão 5 (ID_Questao_Ref = 5)
+(5, 'Pontos_Analises_Clinicas', 'Sim'),
+(5, '0', 'Não'),
 
---
--- Table structure for table `usuarios`
---
+-- Questão 6 (ID_Questao_Ref = 6)
+(6, 'Pontos_Analises_Clinicas', 'Sim'),
+(6, '0', 'Não'),
 
-DROP TABLE IF EXISTS `usuarios`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `usuarios` (
-  `idUsuario` int NOT NULL AUTO_INCREMENT,
-  `nomeUsuario` varchar(100) NOT NULL,
-  `emailUsuario` varchar(100) NOT NULL,
-  `senhaUsuario` varchar(100) NOT NULL,
-  PRIMARY KEY (`idUsuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- Questão 7 (ID_Questao_Ref = 7)
+(7, 'Pontos_Analises_Clinicas', 'Sim'),
+(7, '0', 'Não'),
 
---
--- Dumping data for table `usuarios`
---
+-- Questão 8 (ID_Questao_Ref = 8)
+(8, 'Pontos_Analises_Clinicas', 'Sim'),
+(8, '0', 'Não'),
 
-LOCK TABLES `usuarios` WRITE;
-/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'thiago','thiago@example','202cb962ac59075b964b07152d234b70'),(2,'thiago','thiago@','202cb962ac59075b964b07152d234b70'),(3,'heitor','heitor@gmail','827ccb0eea8a706c4c34a16891f84e7b'),(16,'heitor','heitor@gmail1','827ccb0eea8a706c4c34a16891f84e7b'),(17,'dawdaw','dawdaw','99914b932bd37a50b983c5e7c90ae93b'),(18,'nicolas','nicolas@gmail.com','99914b932bd37a50b983c5e7c90ae93b'),(19,'heitor','nicolas@gmail.com1','827ccb0eea8a706c4c34a16891f84e7b'),(20,'thiago','nicolas@gmail.com123','827ccb0eea8a706c4c34a16891f84e7b'),(21,'eduard','eduard@gmail.com','827ccb0eea8a706c4c34a16891f84e7b'),(22,'ana','ana@gmail.com','827ccb0eea8a706c4c34a16891f84e7b'),(23,'thiago','thiago','827ccb0eea8a706c4c34a16891f84e7b'),(24,'thiago','thiago222','120705de7e61c5b322ad798b8ef225a7'),(25,'jaoao','jaoao@gmail.com','6b554a4666fd31133d8c9a6188f55e46'),(26,'albert','123@gmail/.com','827ccb0eea8a706c4c34a16891f84e7b'),(27,'thiago','anaa123@gmail.com','827ccb0eea8a706c4c34a16891f84e7b'),(28,'helio','ana123@gmail.com','827ccb0eea8a706c4c34a16891f84e7b'),(29,'12334','tt@gmail.com','827ccb0eea8a706c4c34a16891f84e7b'),(30,'DUDU','eduardo@gmail.com','827ccb0eea8a706c4c34a16891f84e7b');
-/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+-- Questão 9 (ID_Questao_Ref = 9)
+(9, 'Pontos_Analises_Clinicas', 'Sim'),
+(9, '0', 'Não'),
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+-- Respostas para Publicidade (ID_Curso_Ref = 3)
+-- Questão 4 (ID_Questao_Ref = 4)
+(10, 'Pontos_Publicidade', 'Sim'),
+(10, '0', 'Não'),
 
--- Dump completed on 2024-09-25 21:24:13
+-- Questão 5 (ID_Questao_Ref = 5)
+(11, 'Pontos_Publicidade', 'Sim'),
+(11, '0', 'Não'),
+
+-- Questão 6 (ID_Questao_Ref = 6)
+(12, 'Pontos_Publicidade', 'Sim'),
+(12, '0', 'Não'),
+
+-- Questão 7 (ID_Questao_Ref = 7)
+(13, 'Pontos_Publicidade', 'Sim'),
+(13, '0', 'Não'),
+
+-- Questão 8 (ID_Questao_Ref = 8)
+(14, 'Pontos_Publicidade', 'Sim'),
+(14, '0', 'Não'),
+
+-- Questão 9 (ID_Questao_Ref = 9)
+(15, 'Pontos_Publicidade', 'Sim'),
+(15, '0', 'Não'),
+
+-- Respostas para Administração (ID_Curso_Ref = 4)
+-- Questão 4 (ID_Questao_Ref = 4)
+(16, 'Pontos_Administracao', 'Sim'),
+(16, '0', 'Não'),
+
+-- Questão 5 (ID_Questao_Ref = 5)
+(17, 'Pontos_Administracao', 'Sim'),
+(17, '0', 'Não'),
+
+-- Questão 6 (ID_Questao_Ref = 6)
+(18, 'Pontos_Administracao', 'Sim'),
+(18, '0', 'Não'),
+
+-- Questão 7 (ID_Questao_Ref = 7)
+(19, 'Pontos_Administracao', 'Sim'),
+(19, '0', 'Não'),
+
+-- Questão 8 (ID_Questao_Ref = 8)
+(20, 'Pontos_Administracao', 'Sim'),
+(20, '0', 'Não'),
+
+-- Questão 9 (ID_Questao_Ref = 9)
+(21, 'Pontos_Administracao', 'Sim'),
+(21, '0', 'Não'),
+
+-- Respostas para Informática (ID_Curso_Ref = 1)
+-- Questão 4 (ID_Questao_Ref = 4)
+(22, 'Pontos_Informatica', 'Sim'),
+(22, '0', 'Não'),
+
+-- Questão 5 (ID_Questao_Ref = 5)
+(23, 'Pontos_Informatica', 'Sim'),
+(23, '0', 'Não'),
+
+-- Questão 6 (ID_Questao_Ref = 6)
+(24, 'Pontos_Informatica', 'Sim'),
+(24, '0', 'Não'),
+
+-- Questão 7 (ID_Questao_Ref = 7)
+(25, 'Pontos_Informatica', 'Sim'),
+(25, '0', 'Não'),
+
+-- Questão 8 (ID_Questao_Ref = 8)
+(26, 'Pontos_Informatica', 'Sim'),
+(26, '0', 'Não'),
+
+-- Questão 9 (ID_Questao_Ref = 9)
+(27, 'Pontos_Informatica', 'Sim'),
+(27, '0', 'Não'),
+
+-- Respostas para Química (ID_Curso_Ref = 5)
+-- Questão 4 (ID_Questao_Ref = 4)
+(28, 'Pontos_Quimica', 'Sim'),
+(28, '0', 'Não'),
+
+-- Questão 5 (ID_Questao_Ref = 5)
+(29, 'Pontos_Quimica', 'Sim'),
+(29, '0', 'Não'),
+
+-- Questão 6 (ID_Questao_Ref = 6)
+(30, 'Pontos_Quimica', 'Sim'),
+(30, '0', 'Não'),
+
+-- Questão 7 (ID_Questao_Ref = 7)
+(31, 'Pontos_Quimica', 'Sim'),
+(31, '0', 'Não'),
+
+-- Questão 8 (ID_Questao_Ref = 8)
+(32, 'Pontos_Quimica', 'Sim'),
+(32, '0', 'Não'),
+
+-- Questão 9 (ID_Questao_Ref = 9)
+(33, 'Pontos_Quimica', 'Sim'),
+(33, '0', 'Não'),
+
+-- Respostas para Eletrônica (ID_Curso_Ref = 2)
+-- Questão 4 (ID_Questao_Ref = 4)
+(34, 'Pontos_Eletronica', 'Sim'),
+(34, '0', 'Não'),
+
+-- Questão 5 (ID_Questao_Ref = 5)
+(35, 'Pontos_Eletronica', 'Sim'),
+(35, '0', 'Não'),
+
+-- Questão 6 (ID_Questao_Ref = 6)
+(36, 'Pontos_Eletronica', 'Sim'),
+(36, '0', 'Não'),
+
+-- Questão 7 (ID_Questao_Ref = 7)
+(37, 'Pontos_Eletronica', 'Sim'),
+(37, '0', 'Não'),
+
+-- Questão 8 (ID_Questao_Ref = 8)
+(38, 'Pontos_Eletronica', 'Sim'),
+(38, '0', 'Não'),
+
+-- Questão 9 (ID_Questao_Ref = 9)
+(39, 'Pontos_Eletronica', 'Sim'),
+(39, '0', 'Não');
+
