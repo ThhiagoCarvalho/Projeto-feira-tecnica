@@ -4,7 +4,7 @@
 
 Seja **bem-vindo** ao repositório do projeto de feira técnica de informática realizado em **2024**:
 
-Este repositório contém o **código-fonte** do projeto construído por técnicos. Foi construído utilizando **PHP**, **JavaScript**, **MySQL**, e outras bibliotecas e tecnologias. O projeto visa simular um teste vocacional com o objetivo de justamente conhecer — e traçar — um perfil o mais exato possível em relação ao seu.
+Este repositório contém o **código-fonte** do projeto construído por técnicos. Foi construído utilizando **PHP**, **JavaScript**, **MySQL**, e outras bibliotecas e tecnologias. O projeto visa simular um teste vocacional com o objetivo de justamente conhecer — e traçar — um perfil o mais exato possível em relação a sua escolha ao cursar um curso técnico.
 
 ## **Objetivo**
 
