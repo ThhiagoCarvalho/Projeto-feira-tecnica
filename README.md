@@ -17,9 +17,9 @@ Portanto, o teste vocacional vai te dar um panorama geral dos seus pontos fortes
 ---
 
 Agradeço por visitar meu repositório e agradeço a todos os desenvolvedores que contribuíram!
+- [**Heitor Rodrigues**](https://www.linkedin.com/in/heitor-rodrigues-cruz-641160330/)
 - [**Valenthina Gasparin**](https://www.linkedin.com/in/valenthina-gasparin-8519492b1/)
 - [**Cássia Washington**](https://www.linkedin.com/in/cassia-d-89b447307/)
 - [**Isabelly de Oliveira**](https://www.linkedin.com/in/isabelly-oliveira-b583742a6/)
-- **Heitor Rodrigues**
-- **Steffany Felix**
+- [**Steffany Felix**](https://www.linkedin.com/in/steffany-felix-louren%C3%A7o-5073732a6/)
 - **Eduardo Pereira**
